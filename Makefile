@@ -12,8 +12,8 @@ else
 LDFLAGS=-lGL -lGLU -lglut
 endif
 
-SRCS=main.cpp Application.cpp
-HDRS=Application.h
+SRCS=main.cpp Application.cpp Scene.cpp
+HDRS=Application.h Scene.h
 
 all: $(EXECUTABLENAME)
 

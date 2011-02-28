@@ -12,10 +12,12 @@
 #endif
 
 #include <string>
+#include "Scene.h"
 
 class Application {
 private:
 	static Application *appInstance;
+	Scene m_scene;
 	
 public:
 	Application(int *argc, char *argv[], std::string windowName);
@@ -24,11 +26,10 @@ public:
 		return appInstance;
 	}
 	
-	static GLvoid reshapeCallback(GLsizei width, GLsizei height);
-	GLvoid reshape(GLsizei width, GLsizei height);
+	Scene scene();
 	
+	static GLvoid reshapeCallback(GLsizei width, GLsizei height);
 	static GLvoid displayCallback();
-	GLvoid display();
 	
 	int exec();
 };
