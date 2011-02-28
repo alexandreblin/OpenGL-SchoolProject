@@ -16,22 +16,32 @@
 
 class Application {
 private:
+	Application();
+	
 	static Application *appInstance;
-	Scene m_scene;
+	Scene *m_scene;
 	
 public:
-	Application(int *argc, char *argv[], std::string windowName);
-	
 	static Application* instance() {
+		if (!appInstance)
+			appInstance = new Application();
+
 		return appInstance;
 	}
 	
-	Scene scene();
+	void setup(int *argc, char *argv[], std::string windowName, Scene *scene);
+	
+	Scene* scene();
 	
 	static GLvoid reshapeCallback(GLsizei width, GLsizei height);
 	static GLvoid displayCallback();
 	
 	int exec();
+	
+	// on déclare les constructeurs par recopie et l'opérateur d'assignation
+	// sans les implémenter pour ne pas que l'objet puisse être copié
+	Application(const Application &a);
+	void operator=(const Application &a);
 };
 
 #endif

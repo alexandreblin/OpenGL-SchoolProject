@@ -1,8 +1,11 @@
 #include <iostream>
 #include "Application.h"
+#include "Scene.h"
 
 int main(int argc, char *argv[]) {
-	Application app = Application(&argc, argv, "Projet OpenGL");
+	Application *app = Application::instance();
+	
+	app->setup(&argc, argv, "Projet OpenGL", new Scene());
 		
-	return app.exec();
+	return app->exec();
 }

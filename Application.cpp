@@ -2,9 +2,10 @@
 
 Application* Application::appInstance = 0;
 
-Application::Application(int *argc, char *argv[], std::string windowName) : m_scene() {
-	Application::appInstance = this;
-	
+Application::Application() : m_scene(NULL) {
+}
+
+void Application::setup(int *argc, char *argv[], std::string windowName, Scene *scene) {	
 	glutInit(argc, argv);
 	
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -29,18 +30,20 @@ Application::Application(int *argc, char *argv[], std::string windowName) : m_sc
 	
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	
+	m_scene = scene;
 }
 
-Scene Application::scene() {
+Scene* Application::scene() {
 	return m_scene;
 }
 
 GLvoid Application::reshapeCallback(GLsizei width, GLsizei height) {
-	Application::instance()->scene().reshape(width, height);
+	Application::instance()->scene()->reshape(width, height);
 }
 
 GLvoid Application::displayCallback() {
-	Application::instance()->scene().display();
+	Application::instance()->scene()->display();
 }
 
 int Application::exec() {
