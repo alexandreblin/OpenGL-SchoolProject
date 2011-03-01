@@ -1,32 +1,31 @@
-EXECUTABLENAME=ProjetApp
-
-CFLAGS=-c -ggdb -Wall
-
-UNAME := $(shell uname)
-# Adaptation des flags en fonction de l'OS (mac ou linux)
-ifeq ($(UNAME), Darwin)
-#CFLAGS+= 
-LDFLAGS=-framework OpenGL -framework GLUT
-else
-#CFLAGS+= 
-LDFLAGS=-lGL -lGLU -lglut
-endif
+EXECUTABLENAME=projet
 
 SRCS=main.cpp Application.cpp Scene.cpp
 HDRS=Application.h Scene.h
 
+CFLAGS=-c -g -Wall
+LDFLAGS=-g
+
+# Adaptation des librairies en fonction de l'OS (mac ou linux)
+ifeq ($(shell uname), Darwin)
+LDLIBS=-framework OpenGL -framework GLUT
+else
+LDLIBS=-lGL -lGLU -lglut
+endif
+
 all: $(EXECUTABLENAME)
 
 $(EXECUTABLENAME): $(SRCS:.cpp=.o)
-	g++ $(LDFLAGS) $^ -o $@
+	g++ $(LDFLAGS) $(LDLIBS) $^ -o $@
 
-%.o: %.c
-	g++ $(CFLAGS) $<
+%.o: %.cpp
+	g++ $(CFLAGS) -MD -o $@ $<
+	@cp $*.d $*.P; \
+	  sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+          -e '/^$$/ d' -e 's/$$/ :/' < $*.d >> $*.P; \
+      rm -f $*.d
 
 clean:
-	rm -f $(SRCS:.cpp=.o) $(EXECUTABLENAME) depend
+	rm -f $(SRCS:.cpp=.o) $(SRCS:.cpp=.P) $(EXECUTABLENAME)
 
-depend: $(SRCS) $(HDRS)
-	g++ -M $(CFLAGS) $(SRCS) > .dependencies
-
--include .dependencies
+-include $(SRCS:.cpp=.P)
