@@ -1,7 +1,7 @@
 EXECUTABLENAME=projet
 
-SRCS=main.cpp Application.cpp Scene.cpp
-HDRS=Application.h Scene.h
+SRCS=main.cpp Application.cpp Scene.cpp MyScene.cpp
+HDRS=Application.h Scene.h MyScene.h
 
 CFLAGS=-c -g -Wall
 LDFLAGS=-g

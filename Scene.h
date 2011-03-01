@@ -18,7 +18,7 @@ public:
 	Scene();
 	
 	GLvoid reshape(GLsizei width, GLsizei height);
-	GLvoid display();
+	virtual GLvoid display() = 0;
 };
 
 #endif
