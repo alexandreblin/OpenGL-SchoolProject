@@ -1,0 +1,5 @@
+Vertex -1 -1 1
+Vertex 1 -1 1
+Vertex 1 1 1
+Vertex -1 1 1
+Face 1 2 3 4
