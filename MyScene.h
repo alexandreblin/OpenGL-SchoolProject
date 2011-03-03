@@ -1,15 +1,31 @@
 #ifndef MYSCENE_H
 #define MYSCENE_H
 
+#include <cmath>
+#define PI 3.141592654589
+
 #include "Scene.h"
+#include "Point.h"
+#include "Vector.h"
 
 class MyScene : public Scene {
 private:
+	Point m_cameraPos;
+	double m_cameraPitch;
+	double m_cameraYaw;
+	
+	bool m_freeLook;
+	// variables permettant de calculer le déplacement relatif de la souris
+	int m_oldMouseX;
+	int m_oldMouseY;
 	
 public:
 	MyScene();
 	
 	GLvoid display();
+	GLvoid keyPress(int key, int mouseX, int mouseY, bool specialKey = false);
+	GLvoid mousePress(int button, int state, int x, int y);
+	GLvoid mouseMove(int x, int y);
 };
 
 #endif
