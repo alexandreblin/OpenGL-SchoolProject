@@ -9,6 +9,24 @@ Vector::Vector(Point a, Point b) : Point(b.x() - a.x(), b.y() - a.y(), b.z() - a
 Vector::Vector(const Vector &v) : Point(v) {
 }
 
+
+double Vector::length() {
+	return sqrt(m_x*m_x + m_y*m_y + m_z*m_z);
+}
+
+Vector Vector::normalized() {
+	double l = length();
+	
+	return Vector(m_x/l, m_y/l, m_z/l);
+}
+
+Vector Vector::normal(Vector a, Vector b) {
+	return Vector(a.y()*b.z() - a.z()*b.y(),
+				  a.z()*b.x() - a.x()*b.z(),
+				  a.x()*b.y() - a.y()*b.x());
+}
+
+
 Vector & Vector::operator+=(const Vector &v) {
 	m_x += v.m_x;
 	m_y += v.m_y;
@@ -57,18 +75,37 @@ const Vector Vector::operator*(double scalar) const {
 	return res;
 }
 
-double Vector::length() {
-	return sqrt(m_x*m_x + m_y*m_y + m_z*m_z);
-}
-
-Vector Vector::normalized() {
-	double l = length();
+/*
+ * Opérateurs surchargés pour ajouter un vecteur à un point
+ */
+Point & operator+=(Point &p, const Vector &v) {
+	p.addX(v.m_x);
+	p.addY(v.m_y);
+	p.addZ(v.m_z);
 	
-	return Vector(m_x/l, m_y/l, m_z/l);
+	return p;
 }
 
-Vector Vector::normal(Vector a, Vector b) {
-	return Vector(a.y()*b.z() - a.z()*b.y(),
-				  a.z()*b.x() - a.x()*b.z(),
-				  a.x()*b.y() - a.y()*b.x());
+Point & operator-=(Point &p, const Vector &v) {
+	p.addX(-v.m_x);
+	p.addY(-v.m_y);
+	p.addZ(-v.m_z);
+	
+	return p;
+}
+
+const Point operator+(const Point &p, const Vector &v) {
+	Point res = p;
+	
+	res += v;
+	
+	return res;
+}
+
+const Point operator-(const Point &p, const Vector &v) {
+	Point res = p;
+	
+	res -= v;
+	
+	return res;
 }

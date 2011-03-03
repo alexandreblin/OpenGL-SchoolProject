@@ -13,6 +13,11 @@ public:
 	Vector(Point a, Point b);
 	Vector(const Vector &v);
 	
+	double length();
+	Vector normalized();
+	
+	static Vector normal(Vector a, Vector b);
+	
 	Vector & operator+=(const Vector &v);
 	Vector & operator-=(const Vector &v);
 	Vector & operator*=(double scalar);
@@ -21,10 +26,10 @@ public:
 	const Vector operator-(const Vector &v) const;
 	const Vector operator*(double scalar) const;
 	
-	double length();
-	Vector normalized();
-	
-	static Vector normal(Vector a, Vector b);
+	friend Point & operator+=(Point &p, const Vector &v);
+	friend Point & operator-=(Point &p, const Vector &v);
+	friend const Point operator+(const Point &p, const Vector &v);
+	friend const Point operator-(const Point &p, const Vector &v);
 };
 
 #endif
