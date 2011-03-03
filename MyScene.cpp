@@ -5,7 +5,7 @@
 #define KEY_S 115
 #define KEY_D 100
 
-MyScene::MyScene() : m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
+MyScene::MyScene() : m_cube("objects/cube.txt"), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
 
 }
 
@@ -29,7 +29,8 @@ GLvoid MyScene::display() {
 	// Dessin des objets
 	glPushMatrix();
 	{
-    	glutSolidCube(0.5);
+    	//glutSolidCube(0.5);
+		m_cube.draw();
   	}
   	glPopMatrix();
 	

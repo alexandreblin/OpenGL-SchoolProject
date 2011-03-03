@@ -5,11 +5,14 @@
 #define PI 3.141592654589
 
 #include "Scene.h"
+#include "Object.h"
 #include "Point.h"
 #include "Vector.h"
 
 class MyScene : public Scene {
 private:
+	Object m_cube;
+	
 	Point m_cameraPos;
 	double m_cameraPitch;
 	double m_cameraYaw;
