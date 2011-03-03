@@ -35,6 +35,10 @@ public:
 	
 	static GLvoid reshapeCallback(GLsizei width, GLsizei height);
 	static GLvoid displayCallback();
+	static GLvoid keyboardCallback(unsigned char key, int x, int y);
+	static GLvoid specialKeyCallback(int key, int x, int y);
+	static GLvoid mousePressCallback(int button, int state, int x, int y);
+	static GLvoid mouseMoveCallback(int x, int y);
 	
 	int exec();
 	

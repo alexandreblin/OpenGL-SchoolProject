@@ -18,6 +18,10 @@ public:
 	Scene();
 	
 	GLvoid reshape(GLsizei width, GLsizei height);
+	
+	virtual	GLvoid keyPress(int key, int mouseX, int mouseY, bool specialKey = false) {}
+	virtual GLvoid mousePress(int button, int state, int x, int y) {}
+	virtual GLvoid mouseMove(int x, int y) {}
 	virtual GLvoid display() = 0;
 };
 

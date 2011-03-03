@@ -15,11 +15,11 @@ void Application::setup(int *argc, char *argv[], std::string windowName, Scene *
 	
 	glutCreateWindow(windowName.c_str());
 	
-	/*glutKeyboardFunc(&touche);
-	glutSpecialFunc(&touche_speciale);
+	glutKeyboardFunc(this->keyboardCallback);
+	glutSpecialFunc(this->specialKeyCallback);
 	
-	glutMouseFunc(&boutonSouris);
-	glutMotionFunc(&souris);*/
+	glutMouseFunc(this->mousePressCallback);
+	glutMotionFunc(this->mouseMoveCallback);
 	
 	glutDisplayFunc(this->displayCallback);
 	glutIdleFunc(this->displayCallback);
@@ -45,6 +45,23 @@ GLvoid Application::reshapeCallback(GLsizei width, GLsizei height) {
 GLvoid Application::displayCallback() {
 	Application::instance()->scene()->display();
 }
+
+GLvoid Application::keyboardCallback(unsigned char key, int x, int y) {
+	Application::instance()->scene()->keyPress(key, x, y);
+}
+
+GLvoid Application::specialKeyCallback(int key, int x, int y) {
+	Application::instance()->scene()->keyPress(key, x, y, true);
+}
+
+GLvoid Application::mousePressCallback(int button, int state, int x, int y) {
+	Application::instance()->scene()->mousePress(button, state, x, y);
+}
+
+GLvoid Application::mouseMoveCallback(int x, int y) {
+	Application::instance()->scene()->mouseMove(x, y);
+}
+
 
 int Application::exec() {
 	glutMainLoop();
