@@ -5,15 +5,17 @@
 #define KEY_S 115
 #define KEY_D 100
 
-MyScene::MyScene() : m_cube("objects/cube.txt"), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
+MyScene::MyScene() : m_object("objects/loop.txt"), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
 
 }
 
+// fonction appelée juste avant glutMainLoop
 GLvoid MyScene::init() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 }
 
+// fonction de modélisation
 GLvoid MyScene::display() {
 	// Initialisation
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -34,8 +36,7 @@ GLvoid MyScene::display() {
 	// Dessin des objets
 	glPushMatrix();
 	{
-    	//glutSolidCube(0.5);
-		m_cube.draw();
+		m_object.draw();
   	}
   	glPopMatrix();
 	

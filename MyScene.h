@@ -11,7 +11,7 @@
 
 class MyScene : public Scene {
 private:
-	Object m_cube;
+	Object m_object;
 	
 	Point m_cameraPos;
 	double m_cameraPitch;
