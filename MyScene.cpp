@@ -5,14 +5,20 @@
 #define KEY_S 115
 #define KEY_D 100
 
-MyScene::MyScene() : m_object("objects/loop.txt"), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
-
+MyScene::MyScene() : m_object("objects/android.txt"), m_light(GL_LIGHT0, Point(0, 3, 5), Vector(0, -.5, -1)), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
 }
 
 // fonction appelée juste avant glutMainLoop
 GLvoid MyScene::init() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	
+	glEnable(GL_LIGHTING);
+	glEnable(GL_COLOR_MATERIAL);
+	
+	m_light.setDiffuse(1, 0, 0);
+	m_light.setCutoff(10);
+	m_light.setExponent(128);
 }
 
 // fonction de modélisation
@@ -32,13 +38,22 @@ GLvoid MyScene::display() {
 
 	glTranslated(-m_cameraPos.x(), -m_cameraPos.y(), -m_cameraPos.z());
 
-			
+
+	// Mise en place de la lumière
+	glPushMatrix();
+	glRotated(glutGet(GLUT_ELAPSED_TIME)/2, 0, 1, 0);
+	m_light.place();
+	m_light.enable();
+	glPopMatrix();
+	
+	
 	// Dessin des objets
 	glPushMatrix();
 	{
 		m_object.draw();
   	}
   	glPopMatrix();
+	
 	
 	glutSwapBuffers();
 }

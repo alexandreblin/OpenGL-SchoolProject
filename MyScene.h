@@ -9,10 +9,12 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Angle.h"
+#include "Spot.h"
 
 class MyScene : public Scene {
 private:
 	Object m_object;
+	Spot m_light;
 	
 	Point m_cameraPos;
 	Angle m_cameraAngle;
