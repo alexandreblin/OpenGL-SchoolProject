@@ -7,13 +7,15 @@ Object::Object(std::string filename, Point pos, Vector axis, Vector scale) : m_p
 	
 	computeFaceNormals();
 	computeVertexNormals();
+
+	saveToFile(filename);
+
+	scaleVertices(m_scale);
 }
 
 void Object::draw() {
-	glScaled(m_scale.x(), m_scale.y(), m_scale.z());
-	
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {
-		glColor3d(0, 0, 1);
+		glColor3d(0.5, 0.86, 0.27);
 		
 		Face f = m_faces[i];
 		
@@ -69,42 +71,63 @@ void Object::draw() {
 void Object::computeFaceNormals() {
 	// d'après http://www.opengl.org/wiki/Calculating_a_Surface_Normal
 	
-	for (unsigned int i = 0; i < m_faces.size(); ++i) {
-		// on boucle sur chaque face
-		Face face = m_faces[i];		
-		Vector normal(0, 0, 0);
+	if (m_faceNormals.size() != m_faces.size()) {
+		cout << "Computing face normals..." << endl;
 		
-		for (unsigned int j = 0; j < face.size(); ++j) {
-			// on boucle sur chaque sommet de la face
-			Point curVertex = m_vertices[face[j]];
-			Point nextVertex = m_vertices[face[(j+1)%face.size()]];
+		m_faceNormals.clear();
+		
+		for (unsigned int i = 0; i < m_faces.size(); ++i) {
+			// on boucle sur chaque face
 			
-			normal.addX((curVertex.y() - nextVertex.y()) * (curVertex.z() + nextVertex.z()));
-			normal.addY((curVertex.z() - nextVertex.z()) * (curVertex.x() + nextVertex.x()));
-			normal.addZ((curVertex.x() - nextVertex.x()) * (curVertex.y() + nextVertex.y()));
+			cout << i+1 << "/" << m_faces.size() << endl;
+			
+			Face face = m_faces[i];
+			Vector normal(0, 0, 0);
+		
+			for (unsigned int j = 0; j < face.size(); ++j) {
+				// on boucle sur chaque sommet de la face
+				Point curVertex = m_vertices[face[j]];
+				Point nextVertex = m_vertices[face[(j+1)%face.size()]];
+			
+				normal.addX((curVertex.y() - nextVertex.y()) * (curVertex.z() + nextVertex.z()));
+				normal.addY((curVertex.z() - nextVertex.z()) * (curVertex.x() + nextVertex.x()));
+				normal.addZ((curVertex.x() - nextVertex.x()) * (curVertex.y() + nextVertex.y()));
+			}
+		
+			m_faceNormals.push_back(normal.normalized());
 		}
 		
-		m_faceNormals.push_back(normal.normalized());
+		cout << "Face normals computed!" << endl;
 	}
 }
 
 void Object::computeVertexNormals() {
-	for (unsigned int i = 0; i < m_vertices.size(); ++i) {
-		// on boucle sur chaque sommet de l'objet
+	if (m_vertexNormals.size() != m_vertices.size()) {
+		cout << "Computing vertex normals..." << endl;
 		
-		Vector normal(0, 0, 0);
+		m_vertexNormals.clear();
 		
-		for (unsigned int j = 0; j < m_faces.size(); ++j) {
-			// on boucle sur chaque face de l'objet
-			
-			Face face = m_faces[j];
-			if (find(face.begin(), face.end(), i) != face.end()) {
-				// si la face contient notre sommet, on ajoute sa normale
-				normal += m_faceNormals[j];
+		for (unsigned int i = 0; i < m_vertices.size(); ++i) {
+			// on boucle sur chaque sommet de l'objet
+
+			cout << i+1 << "/" << m_vertices.size() << endl;
+		
+			Vector normal(0, 0, 0);
+		
+			for (unsigned int j = 0; j < m_faces.size(); ++j) {
+				// on boucle sur chaque face de l'objet
+				Face face = m_faces[j];
+				
+				if (find(face.begin(), face.end(), i) != face.end()) {
+					// si la face contient notre sommet, on ajoute sa normale
+					normal += m_faceNormals[j];
+				}
 			}
+			
+			m_vertexNormals.push_back(normal.normalized());
 		}
-		
-		m_vertexNormals.push_back(normal.normalized());
+
+		cout << "Vertex normals computed!" << endl;
 	}
 }
 
@@ -126,6 +149,14 @@ Point Object::getFaceCenter(Face f) {
 	return center;
 }
 
+void Object::scaleVertices(Vector scale) {
+	for (unsigned int i = 0; i < m_vertices.size(); ++i) {
+		m_vertices[i].setX(m_vertices[i].x() * scale.x());
+		m_vertices[i].setY(m_vertices[i].y() * scale.y());
+		m_vertices[i].setZ(m_vertices[i].z() * scale.z());
+	}
+}
+
 void Object::loadFromFile(std::string filename) {
 	ifstream file(filename.c_str());
 	
@@ -136,13 +167,19 @@ void Object::loadFromFile(std::string filename) {
 		
 		str >> type;
 
-		if (type == "Vertex" || type == "Scale") {
+		if (type == "Vertex" || type == "Scale" || type == "FaceNormal" || type == "VertexNormal") {
 			double x, y, z;
 			
 			str >> x >> y >> z;
 			
 			if (type == "Vertex") {
 				m_vertices.push_back(Point(x, y, z));
+			}
+			else if (type == "FaceNormal") {
+				m_faceNormals.push_back(Vector(x, y, z));
+			}
+			else if (type == "VertexNormal") {
+				m_vertexNormals.push_back(Vector(x, y, z));
 			}
 			else if (type == "Scale") {
 				m_scale = Vector(x, y, z);
@@ -153,14 +190,52 @@ void Object::loadFromFile(std::string filename) {
 			while (str.good()) {
 				int num;
 			
-				str >> num;
-				
-				// on soustrait 1 car dans le fichier la numérotation commence à 1
-				// et les tableaux sont indexés à partir de 0
-				f.push_back(num-1);
+				if (str >> num)
+					f.push_back(num-1);
 			}
 			
 			m_faces.push_back(f);
 		}
 	}
+	
+	file.close();
+}
+
+void Object::saveToFile(std::string filename) {
+	ofstream file(filename.c_str(), ios::trunc);
+	
+	file.precision(std::numeric_limits<double>::digits10);
+	
+	if (m_scale.x() != 1 || m_scale.y() != 1 || m_scale.z() != 1)
+		file << "Scale " << m_scale << endl << endl;
+	
+	for (unsigned int i = 0; i < m_vertices.size(); ++i) {
+		file << "Vertex " << m_vertices[i] << endl;
+	}
+	
+	file << endl;
+	
+	for (unsigned int i = 0; i < m_faces.size(); ++i) {
+		file << "Face";
+		
+		Face f = m_faces[i];
+		for (unsigned int j = 0; j < f.size(); ++j)
+			file << " " << f[j]+1;
+		
+		file << endl;
+	}
+	
+	file << endl << endl << "# Normales générées automatiquement" << endl << endl;
+	
+	for (unsigned int i = 0; i < m_faceNormals.size(); ++i) {
+		file << "FaceNormal " << m_faceNormals[i] << endl;
+	}
+	
+	file << endl;
+	
+	for (unsigned int i = 0; i < m_vertexNormals.size(); ++i) {
+		file << "VertexNormal " << m_vertexNormals[i] << endl;
+	}
+		
+	file.close();
 }

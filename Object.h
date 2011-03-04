@@ -39,6 +39,8 @@ public:
 	
 private:
 	void loadFromFile(std::string filename);
+	void saveToFile(std::string filename);
+	void scaleVertices(Vector scale);
 	void computeFaceNormals();
 	void computeVertexNormals();
 	

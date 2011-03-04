@@ -47,7 +47,7 @@ bool Point::operator==(const Point &other) const {
 }
 
 std::ostream & operator<<(std::ostream &out, const Point &p) {
-	out << "(" << p.m_x << ", " << p.m_y << ", " << p.m_z << ")";
+	out << p.m_x << " " << p.m_y << " " << p.m_z;
 	
 	return out;
 }
