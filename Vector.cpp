@@ -17,7 +17,10 @@ double Vector::length() {
 Vector Vector::normalized() {
 	double l = length();
 	
-	return Vector(m_x/l, m_y/l, m_z/l);
+	if (l != 0)
+		return Vector(m_x/l, m_y/l, m_z/l);
+	else
+		return Vector(0, 0, 0);
 }
 
 Vector Vector::normal(Vector a, Vector b) {
