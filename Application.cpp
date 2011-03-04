@@ -27,11 +27,10 @@ void Application::setup(int *argc, char *argv[], std::string windowName, Scene *
 	glutReshapeFunc(this->reshapeCallback);
 		
 	glClearColor(0, 0, 0, 0);
-	
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	
+		
 	m_scene = scene;
+	
+	m_scene->init();
 }
 
 Scene* Application::scene() {

@@ -9,6 +9,11 @@ MyScene::MyScene() : m_cube("objects/cube.txt"), m_cameraPos(Point(0, 0, 5)), m_
 
 }
 
+GLvoid MyScene::init() {
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+}
+
 GLvoid MyScene::display() {
 	// Initialisation
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

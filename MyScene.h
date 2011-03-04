@@ -25,6 +25,7 @@ private:
 public:
 	MyScene();
 	
+	GLvoid init();
 	GLvoid display();
 	GLvoid keyPress(int key, int mouseX, int mouseY, bool specialKey = false);
 	GLvoid mousePress(int button, int state, int x, int y);
