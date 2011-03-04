@@ -32,6 +32,8 @@ private:
 	
 	std::vector<Vector> m_faceNormals;
 	std::vector<Vector> m_vertexNormals;
+	
+	bool m_showNormals;
 		
 public:
     Object(std::string filename, Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
@@ -40,6 +42,8 @@ public:
 	
 	Point & position();
 	Angle & angle();
+	
+	void setShowNormals(bool visible);
 	
 private:
 	void loadFromFile(std::string filename);
