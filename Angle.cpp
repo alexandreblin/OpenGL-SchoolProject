@@ -3,6 +3,15 @@
 Angle::Angle(double pitch, double yaw, double roll) : m_pitch(pitch), m_yaw(yaw), m_roll(roll) {
 }
 
+// retourne un vecteur normalisé pointant dans la direction de l'angle
+Vector Angle::direction() {
+	// angles en radians
+	double yawRad = m_yaw / 180 * PI;
+	double pitchRad = m_pitch / 180 * PI;
+	
+	return Vector(sin(yawRad+PI) * cos(pitchRad), sin(pitchRad), cos(yawRad+PI) * cos(pitchRad)).normalized();
+}
+
 double Angle::pitch() {
 	return m_pitch;
 }

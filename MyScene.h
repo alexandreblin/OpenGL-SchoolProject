@@ -1,9 +1,6 @@
 #ifndef MYSCENE_H
 #define MYSCENE_H
 
-#include <cmath>
-#define PI 3.141592654589
-
 #include "Scene.h"
 #include "Object.h"
 #include "Point.h"

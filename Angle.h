@@ -1,6 +1,11 @@
 #ifndef ANGLE_H
 #define ANGLE_H
 
+#include <cmath>
+#define PI 3.141592654589
+
+#include "Vector.h"
+
 class Angle {
 private:
 	double m_pitch;
@@ -9,6 +14,8 @@ private:
 
 public:
 	Angle(double pitch = 0, double yaw = 0, double roll = 0);
+	
+	Vector direction();
 	
 	double pitch();
 	double yaw();

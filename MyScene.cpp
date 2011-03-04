@@ -59,12 +59,8 @@ GLvoid MyScene::display() {
 }
 
 GLvoid MyScene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
-	// angles en radians
-	double yawRad = m_cameraAngle.yaw() / 180 * PI;
-	double pitchRad = m_cameraAngle.pitch() / 180 * PI;
-	
 	// vecteur correspondant à la direction de la caméra
-	Vector dir = Vector(sin(yawRad+PI) * cos(pitchRad), sin(pitchRad), cos(yawRad+PI) * cos(pitchRad)).normalized();
+	Vector dir = m_cameraAngle.direction();
 	
 	// vecteur "perpendiculaire" à la direction pour se déplacer latéralement
 	Vector perp = Vector::normal(dir, Vector(0, 1, 0));
