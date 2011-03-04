@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Object::Object(std::string filename, Point pos, Vector axis) : m_position(pos), m_axis(axis) {
+Object::Object(std::string filename, Point pos, Vector axis, Vector scale) : m_position(pos), m_axis(axis), m_scale(scale) {
 	loadFromFile(filename);
 	
 	computeFaceNormals();
@@ -10,6 +10,8 @@ Object::Object(std::string filename, Point pos, Vector axis) : m_position(pos), 
 }
 
 void Object::draw() {
+	glScaled(m_scale.x(), m_scale.y(), m_scale.z());
+	
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {
 		glColor3d(0, 0, 1);
 		
@@ -134,12 +136,17 @@ void Object::loadFromFile(std::string filename) {
 		
 		str >> type;
 
-		if (type == "Vertex") {
+		if (type == "Vertex" || type == "Scale") {
 			double x, y, z;
 			
 			str >> x >> y >> z;
 			
-			m_vertices.push_back(Point(x, y, z));
+			if (type == "Vertex") {
+				m_vertices.push_back(Point(x, y, z));
+			}
+			else if (type == "Scale") {
+				m_scale = Vector(x, y, z);
+			}
 		}
 		else if (type == "Face") {
 			Face f;

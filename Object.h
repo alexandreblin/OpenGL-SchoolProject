@@ -24,6 +24,7 @@ class Object {
 private:
 	Point m_position;
 	Vector m_axis;
+	Vector m_scale;
 	
 	std::vector<Point> m_vertices;
 	std::vector<Face> m_faces;
@@ -32,7 +33,7 @@ private:
 	std::vector<Vector> m_vertexNormals;
 		
 public:
-    Object(std::string filename, Point pos = Point(0, 0, 0), Vector axis = Vector(0, 1, 0));
+    Object(std::string filename, Point pos = Point(0, 0, 0), Vector axis = Vector(0, 1, 0), Vector scale = Vector(1, 1, 1));
 
 	void draw();
 	
