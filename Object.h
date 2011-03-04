@@ -17,13 +17,14 @@
 
 #include "Point.h"
 #include "Vector.h"
+#include "Angle.h"
 
 typedef std::vector<int> Face;
 
 class Object {
 private:
 	Point m_position;
-	Vector m_axis;
+	Angle m_angle;
 	Vector m_scale;
 	
 	std::vector<Point> m_vertices;
@@ -33,7 +34,7 @@ private:
 	std::vector<Vector> m_vertexNormals;
 		
 public:
-    Object(std::string filename, Point pos = Point(0, 0, 0), Vector axis = Vector(0, 1, 0), Vector scale = Vector(1, 1, 1));
+    Object(std::string filename, Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
 
 	void draw();
 	

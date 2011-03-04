@@ -1,7 +1,7 @@
 EXECUTABLENAME=projet
 
-SRCS=main.cpp Application.cpp Scene.cpp MyScene.cpp Point.cpp Vector.cpp Object.cpp
-HDRS=Application.h Scene.h MyScene.h Point.h Vector.h Object.h
+SRCS=main.cpp Application.cpp Scene.cpp MyScene.cpp Point.cpp Vector.cpp Object.cpp Angle.cpp
+HDRS=Application.h Scene.h MyScene.h Point.h Vector.h Object.h Angle.h
 
 CFLAGS=-c -g -Wall
 LDFLAGS=-g

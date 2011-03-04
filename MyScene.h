@@ -8,14 +8,14 @@
 #include "Object.h"
 #include "Point.h"
 #include "Vector.h"
+#include "Angle.h"
 
 class MyScene : public Scene {
 private:
 	Object m_object;
 	
 	Point m_cameraPos;
-	double m_cameraPitch;
-	double m_cameraYaw;
+	Angle m_cameraAngle;
 	
 	bool m_freeLook;
 	// variables permettant de calculer le déplacement relatif de la souris

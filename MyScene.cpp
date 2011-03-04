@@ -24,11 +24,11 @@ GLvoid MyScene::display() {
 
 
 	// Mise en place de la caméra
-	if (m_cameraPitch != 0)
-		glRotated(-m_cameraPitch, 1, 0, 0);
+	if (m_cameraAngle.pitch() != 0)
+		glRotated(-m_cameraAngle.pitch(), 1, 0, 0);
 		
-	if (m_cameraYaw != 0)
-		glRotated(-m_cameraYaw, 0, 1, 0);
+	if (m_cameraAngle.yaw() != 0)
+		glRotated(-m_cameraAngle.yaw(), 0, 1, 0);
 
 	glTranslated(-m_cameraPos.x(), -m_cameraPos.y(), -m_cameraPos.z());
 
@@ -45,8 +45,8 @@ GLvoid MyScene::display() {
 
 GLvoid MyScene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 	// angles en radians
-	double yawRad = m_cameraYaw / 180 * PI;
-	double pitchRad = m_cameraPitch / 180 * PI;
+	double yawRad = m_cameraAngle.yaw() / 180 * PI;
+	double pitchRad = m_cameraAngle.pitch() / 180 * PI;
 	
 	// vecteur correspondant à la direction de la caméra
 	Vector dir = Vector(sin(yawRad+PI) * cos(pitchRad), sin(pitchRad), cos(yawRad+PI) * cos(pitchRad)).normalized();
@@ -92,8 +92,8 @@ GLvoid MyScene::mouseMove(int x, int y) {
 		// on fait tourner la caméra proportionellement aux dimensions de la
 		// fenêtre pour que le mouvement soit uniforme quelle que soit sa taille
 
-		m_cameraYaw += deltaX/(double)glutGet(GLUT_WINDOW_WIDTH) * 180;
-		m_cameraPitch += deltaY/(double)glutGet(GLUT_WINDOW_HEIGHT) * 180;
+		m_cameraAngle.addYaw(deltaX/(double)glutGet(GLUT_WINDOW_WIDTH) * 180);
+		m_cameraAngle.addPitch(deltaY/(double)glutGet(GLUT_WINDOW_HEIGHT) * 180);
 		
 		m_oldMouseX = x;
 		m_oldMouseY = y;

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Object::Object(std::string filename, Point pos, Vector axis, Vector scale) : m_position(pos), m_axis(axis), m_scale(scale) {
+Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_position(pos), m_angle(angle), m_scale(scale) {
 	loadFromFile(filename);
 	
 	computeFaceNormals();
