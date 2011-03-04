@@ -14,6 +14,12 @@ Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_p
 }
 
 void Object::draw() {
+	glTranslated(m_position.x(), m_position.y(), m_position.z());
+	
+	glRotated(-m_angle.pitch(), 1, 0, 0);
+	glRotated(-m_angle.yaw(), 0, 1, 0);
+	glRotated(-m_angle.roll(), 0, 0, 1);
+	
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {
 		glColor3d(0.5, 0.86, 0.27);
 		
@@ -66,6 +72,14 @@ void Object::draw() {
 		
 		glEnd();
 	}
+}
+
+Point & Object::position() {
+	return m_position;
+}
+
+Angle & Object::angle() {
+	return m_angle;
 }
 
 void Object::computeFaceNormals() {

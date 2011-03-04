@@ -38,6 +38,9 @@ public:
 
 	void draw();
 	
+	Point & position();
+	Angle & angle();
+	
 private:
 	void loadFromFile(std::string filename);
 	void saveToFile(std::string filename);
