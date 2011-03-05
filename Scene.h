@@ -11,19 +11,34 @@
 #include <GL/glu.h>
 #endif
 
+#include "Object.h"
+#include "Point.h"
+#include "Vector.h"
+#include "Angle.h"
+#include "Spot.h"
+
 class Scene {
 private:
+	Object m_object;
+	Spot m_light;
+	
+	Point m_cameraPos;
+	Angle m_cameraAngle;
+	
+	bool m_freeLook;
+	// variables permettant de calculer le déplacement relatif de la souris
+	int m_oldMouseX;
+	int m_oldMouseY;
 	
 public:
 	Scene();
 	
+	GLvoid init();
+	GLvoid display();
 	GLvoid reshape(GLsizei width, GLsizei height);
-	
-	virtual	GLvoid keyPress(int key, int mouseX, int mouseY, bool specialKey = false) {}
-	virtual GLvoid mousePress(int button, int state, int x, int y) {}
-	virtual GLvoid mouseMove(int x, int y) {}
-	virtual GLvoid init() = 0;
-	virtual GLvoid display() = 0;
+	GLvoid keyPress(int key, int mouseX, int mouseY, bool specialKey = false);
+	GLvoid mousePress(int button, int state, int x, int y);
+	GLvoid mouseMove(int x, int y);
 };
 
 #endif

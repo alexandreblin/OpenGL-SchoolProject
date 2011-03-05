@@ -2,10 +2,10 @@
 
 Application* Application::appInstance = 0;
 
-Application::Application() : m_scene(NULL) {
+Application::Application() : m_scene() {
 }
 
-void Application::setup(int *argc, char *argv[], std::string windowName, Scene *scene) {	
+void Application::setup(int *argc, char *argv[], std::string windowName) {	
 	glutInit(argc, argv);
 	
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
@@ -28,37 +28,35 @@ void Application::setup(int *argc, char *argv[], std::string windowName, Scene *
 		
 	glClearColor(0, 0, 0, 0);
 		
-	m_scene = scene;
-	
-	m_scene->init();
+	m_scene.init();
 }
 
-Scene* Application::scene() {
+Scene & Application::scene() {
 	return m_scene;
 }
 
 GLvoid Application::reshapeCallback(GLsizei width, GLsizei height) {
-	Application::instance()->scene()->reshape(width, height);
+	Application::instance()->scene().reshape(width, height);
 }
 
 GLvoid Application::displayCallback() {
-	Application::instance()->scene()->display();
+	Application::instance()->scene().display();
 }
 
 GLvoid Application::keyboardCallback(unsigned char key, int x, int y) {
-	Application::instance()->scene()->keyPress(key, x, y);
+	Application::instance()->scene().keyPress(key, x, y);
 }
 
 GLvoid Application::specialKeyCallback(int key, int x, int y) {
-	Application::instance()->scene()->keyPress(key, x, y, true);
+	Application::instance()->scene().keyPress(key, x, y, true);
 }
 
 GLvoid Application::mousePressCallback(int button, int state, int x, int y) {
-	Application::instance()->scene()->mousePress(button, state, x, y);
+	Application::instance()->scene().mousePress(button, state, x, y);
 }
 
 GLvoid Application::mouseMoveCallback(int x, int y) {
-	Application::instance()->scene()->mouseMove(x, y);
+	Application::instance()->scene().mouseMove(x, y);
 }
 
 
