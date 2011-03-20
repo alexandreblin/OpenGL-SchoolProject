@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_position(pos), m_angle(angle), m_scale(scale), m_showNormals(false) {
+Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_position(pos), m_angle(angle), m_scale(scale) {
 	loadFromFile(filename);
 	
 	computeFaceNormals();
@@ -45,36 +45,6 @@ void Object::draw() {
 		}
 		
 		glEnd();
-		
-		
-		if (m_showNormals) {
-			glBegin(GL_LINES);
-			glColor3d(1, 0, 0);
-
-			Point center = getFaceCenter(f);
-			Point centerNormal = center + m_faceNormals[i];
-
-			glVertex3dv((const GLdouble *)&center);
-			glVertex3dv((const GLdouble *)&centerNormal);
-		
-			glEnd();
-		}
-	}
-	
-	if (m_showNormals) {
-		for (unsigned int i = 0; i < m_vertices.size(); ++i) {
-			glBegin(GL_LINES);
-		
-			glColor3d(0, 1, 0);
-		
-			Point vertex = m_vertices[i];
-			Point normal = vertex + m_vertexNormals[i];
-		
-			glVertex3d(vertex.x(), vertex.y(), vertex.z());
-			glVertex3d(normal.x(), normal.y(), normal.z());
-		
-			glEnd();
-		}
 	}
 }
 
@@ -84,10 +54,6 @@ Point & Object::position() {
 
 Angle & Object::angle() {
 	return m_angle;
-}
-
-void Object::setShowNormals(bool on) {
-	m_showNormals = on;
 }
 
 void Object::computeFaceNormals() {
