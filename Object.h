@@ -18,8 +18,7 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Angle.h"
-
-typedef std::vector<int> Face;
+#include "Face.h"
 
 class Object {
 private:

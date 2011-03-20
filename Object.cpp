@@ -25,20 +25,20 @@ void Object::draw() {
 		
 		Face f = m_faces[i];
 		
-		if (f.size() == 3)
+		if (f.numVertices() == 3)
 			glBegin(GL_TRIANGLES);
-		else if (f.size() == 4)
+		else if (f.numVertices() == 4)
 			glBegin(GL_QUADS);
-		else if (f.size() > 4)
+		else if (f.numVertices() > 4)
 			glBegin(GL_POLYGON);
 		else {
 			std::cout << "Invalid face " << i << std::endl;
 			continue;
 		}
 		
-		for (unsigned int j = 0; j < f.size(); ++j) {
-			Point vertex = m_vertices[f[j]];
-			Point normal = m_vertexNormals[f[j]];
+		for (unsigned int j = 0; j < f.numVertices(); ++j) {
+			Point vertex = m_vertices[f.vertices()[j]];
+			Point normal = m_vertexNormals[f.vertices()[j]];
 			
 			glNormal3d(normal.x(), normal.y(), normal.z());
 			glVertex3d(vertex.x(), vertex.y(), vertex.z());
@@ -106,10 +106,10 @@ void Object::computeFaceNormals() {
 			Face face = m_faces[i];
 			Vector normal(0, 0, 0);
 		
-			for (unsigned int j = 0; j < face.size(); ++j) {
+			for (unsigned int j = 0; j < face.numVertices(); ++j) {
 				// on boucle sur chaque sommet de la face
-				Point curVertex = m_vertices[face[j]];
-				Point nextVertex = m_vertices[face[(j+1)%face.size()]];
+				Point curVertex = m_vertices[face.vertices()[j]];
+				Point nextVertex = m_vertices[face.vertices()[(j+1)%face.numVertices()]];
 			
 				normal.addX((curVertex.y() - nextVertex.y()) * (curVertex.z() + nextVertex.z()));
 				normal.addY((curVertex.z() - nextVertex.z()) * (curVertex.x() + nextVertex.x()));
@@ -140,7 +140,7 @@ void Object::computeVertexNormals() {
 				// on boucle sur chaque face de l'objet
 				Face face = m_faces[j];
 				
-				if (find(face.begin(), face.end(), i) != face.end()) {
+				if (find(face.vertices().begin(), face.vertices().end(), i) != face.vertices().end()) {
 					// si la face contient notre sommet, on ajoute sa normale
 					normal += m_faceNormals[j];
 				}
@@ -156,17 +156,17 @@ void Object::computeVertexNormals() {
 Point Object::getFaceCenter(Face f) {
 	Point center(0, 0, 0);
 	
-	int numFaces = f.size();
+	int numVertices = f.numVertices();
 	
-	for (int i = 0; i < numFaces; ++i) {
-		center.addX(m_vertices[f[i]].x());
-		center.addY(m_vertices[f[i]].y());
-		center.addZ(m_vertices[f[i]].z());
+	for (int i = 0; i < numVertices; ++i) {
+		center.addX(m_vertices[f.vertices()[i]].x());
+		center.addY(m_vertices[f.vertices()[i]].y());
+		center.addZ(m_vertices[f.vertices()[i]].z());
 	}
 	
-	center.setX(center.x() / numFaces);
-	center.setY(center.y() / numFaces);
-	center.setZ(center.z() / numFaces);
+	center.setX(center.x() / numVertices);
+	center.setY(center.y() / numVertices);
+	center.setZ(center.z() / numVertices);
 	
 	return center;
 }
@@ -213,7 +213,7 @@ void Object::loadFromFile(std::string filename) {
 				int num;
 			
 				if (str >> num)
-					f.push_back(num-1);
+					f.vertices().push_back(num-1);
 			}
 			
 			m_faces.push_back(f);
@@ -241,8 +241,8 @@ void Object::saveToFile(std::string filename) {
 		file << "Face";
 		
 		Face f = m_faces[i];
-		for (unsigned int j = 0; j < f.size(); ++j)
-			file << " " << f[j]+1;
+		for (unsigned int j = 0; j < f.numVertices(); ++j)
+			file << " " << f.vertices()[j]+1;
 		
 		file << endl;
 	}
