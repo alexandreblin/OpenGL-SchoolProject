@@ -8,6 +8,8 @@ private:
 	std::vector<int> m_vertices;
 	std::vector<int> m_texCoords;
 	std::vector<int> m_normals;
+	
+	int m_smoothingGroup;
 
 public:
 	Face();
@@ -16,6 +18,11 @@ public:
 	std::vector<int> & texCoords();
 	std::vector<int> & normals();
 	
+	void setSmoothingGroup(int s);
+	int smoothingGroup();
+	
+	bool hasTexCoords();
+	bool hasNormals();
 	unsigned int numVertices();
 };
 

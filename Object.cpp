@@ -2,15 +2,18 @@
 
 using namespace std;
 
-Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_position(pos), m_angle(angle), m_scale(scale) {
+Object::Object(std::string filename, Point pos, Angle angle) : m_position(pos), m_angle(angle) {
 	loadFromFile(filename);
 	
 	computeFaceNormals();
-	computeVertexNormals();
-
-	saveToFile(filename);
-
-	scaleVertices(m_scale);
+	computeRemainingNormals();
+	//computeVertexNormals();
+	
+	/*for (unsigned int i = 0; i < m_vertices.size(); ++i) {
+		m_vertices[i].setX(m_vertices[i].x() * 0.01);
+		m_vertices[i].setY(m_vertices[i].y() * 0.01);
+		m_vertices[i].setZ(m_vertices[i].z() * 0.01);
+	}*/
 }
 
 void Object::draw() {
@@ -21,7 +24,7 @@ void Object::draw() {
 	glRotated(-m_angle.roll(), 0, 0, 1);
 	
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {
-		glColor3d(0.5, 0.86, 0.27);
+		glColor3d(0, 0, 1);
 		
 		Face f = m_faces[i];
 		
@@ -38,7 +41,7 @@ void Object::draw() {
 		
 		for (unsigned int j = 0; j < f.numVertices(); ++j) {
 			Point vertex = m_vertices[f.vertices()[j]];
-			Point normal = m_vertexNormals[f.vertices()[j]];
+			Point normal = m_vertexNormals[f.normals()[j]];
 			
 			glNormal3d(normal.x(), normal.y(), normal.z());
 			glVertex3d(vertex.x(), vertex.y(), vertex.z());
@@ -54,6 +57,37 @@ Point & Object::position() {
 
 Angle & Object::angle() {
 	return m_angle;
+}
+
+void Object::computeRemainingNormals() {
+	cout << "Computing remaining vertex normals..." << endl;
+	int count = 0;
+	// on boucle sur chaque face de l'objet
+	for (unsigned int i = 0; i < m_faces.size(); ++i) {
+		Face face = m_faces[i];
+		
+		if (face.hasNormals()) continue;
+
+		count++;
+		
+		// on boucle sur chaque sommet de la face
+		for (unsigned int j = 0; j < face.vertices().size(); ++j) {
+			Vector normal(0, 0, 0);
+			
+			for (unsigned int k = 0; k < m_faces.size(); k++) {
+				if (m_faces[k].smoothingGroup() == face.smoothingGroup() &&
+				find(m_faces[k].vertices().begin(), m_faces[k].vertices().end(), face.vertices()[j]) != m_faces[k].vertices().end()) {
+					// si la face contient notre sommet, on ajoute sa normale
+					normal += m_faceNormals[k];
+				}
+			}
+			
+			m_vertexNormals.push_back(normal);
+			face.normals().push_back(m_vertexNormals.size()-1);
+		}		
+	}
+
+	cout << count << " remaining vertex normals computed!" << endl;
 }
 
 void Object::computeFaceNormals() {
@@ -137,16 +171,10 @@ Point Object::getFaceCenter(Face f) {
 	return center;
 }
 
-void Object::scaleVertices(Vector scale) {
-	for (unsigned int i = 0; i < m_vertices.size(); ++i) {
-		m_vertices[i].setX(m_vertices[i].x() * scale.x());
-		m_vertices[i].setY(m_vertices[i].y() * scale.y());
-		m_vertices[i].setZ(m_vertices[i].z() * scale.z());
-	}
-}
-
 void Object::loadFromFile(std::string filename) {
 	ifstream file(filename.c_str());
+	
+	int currentSmoothingGroup = 0;
 	
 	string line;
 	while(getline(file, line)) {
@@ -155,75 +183,65 @@ void Object::loadFromFile(std::string filename) {
 		
 		str >> type;
 
-		if (type == "Vertex" || type == "Scale" || type == "FaceNormal" || type == "VertexNormal") {
+		if (type == "v" || type == "vn") {
 			double x, y, z;
 			
 			str >> x >> y >> z;
 			
-			if (type == "Vertex") {
+			if (type == "v") {
 				m_vertices.push_back(Point(x, y, z));
 			}
-			else if (type == "FaceNormal") {
-				m_faceNormals.push_back(Vector(x, y, z));
-			}
-			else if (type == "VertexNormal") {
+			else if (type == "vn") {
 				m_vertexNormals.push_back(Vector(x, y, z));
 			}
-			else if (type == "Scale") {
-				m_scale = Vector(x, y, z);
-			}
 		}
-		else if (type == "Face") {
+		else if (type == "f") {
 			Face f;
-			while (str.good()) {
-				int num;
 			
-				if (str >> num)
-					f.vertices().push_back(num-1);
+			f.setSmoothingGroup(currentSmoothingGroup);
+			
+			// format : f v/vt/vn, avec vt et vn optionnels
+			while (str.good()) {
+				int v, vt = -1, vn = -1;
+			
+				if (str >> v) {
+					f.vertices().push_back(v-1); // on retire 1 car les numéros commencent à 1 dans le fichier et les tableaux sont indexés à 0
+					
+					// si on a un slash, on tente de lire vt
+					if (str.peek() == 47) {
+						str.seekg(1, ios_base::cur); // saute le slash
+						
+						// si on a pas un deuxième slash juste après, c'est que vt est bien là
+						if (str.peek() != 47) {
+							str >> vt;
+							f.texCoords().push_back(vt-1);
+						}
+						
+						// on vérifie si on a un deuxième slash
+						if (str.peek() == 47) {
+							str.seekg(1, ios_base::cur);
+							str >> vn;
+							f.normals().push_back(vn-1);
+						}
+					}
+				}
 			}
 			
 			m_faces.push_back(f);
 		}
+		else if (type == "s") {
+			int s;
+			if (str >> s)
+				currentSmoothingGroup = s;
+			else
+				currentSmoothingGroup = 0;
+		}
+		else if (type == "mtllib") {
+			string file;
+			str >> file;
+			cout << "MTL Lib file: " << file << endl;
+		}
 	}
 	
-	file.close();
-}
-
-void Object::saveToFile(std::string filename) {
-	ofstream file(filename.c_str(), ios::trunc);
-	
-	file.precision(std::numeric_limits<double>::digits10);
-	
-	if (m_scale.x() != 1 || m_scale.y() != 1 || m_scale.z() != 1)
-		file << "Scale " << m_scale << endl << endl;
-	
-	for (unsigned int i = 0; i < m_vertices.size(); ++i) {
-		file << "Vertex " << m_vertices[i] << endl;
-	}
-	
-	file << endl;
-	
-	for (unsigned int i = 0; i < m_faces.size(); ++i) {
-		file << "Face";
-		
-		Face f = m_faces[i];
-		for (unsigned int j = 0; j < f.numVertices(); ++j)
-			file << " " << f.vertices()[j]+1;
-		
-		file << endl;
-	}
-	
-	file << endl << endl << "# Normales générées automatiquement" << endl << endl;
-	
-	for (unsigned int i = 0; i < m_faceNormals.size(); ++i) {
-		file << "FaceNormal " << m_faceNormals[i] << endl;
-	}
-	
-	file << endl;
-	
-	for (unsigned int i = 0; i < m_vertexNormals.size(); ++i) {
-		file << "VertexNormal " << m_vertexNormals[i] << endl;
-	}
-		
 	file.close();
 }

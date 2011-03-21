@@ -20,7 +20,7 @@
 class Scene {
 private:
 	Object m_object;
-	Spot m_light;
+	Light m_light;
 	
 	Point m_cameraPos;
 	Angle m_cameraAngle;

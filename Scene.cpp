@@ -5,20 +5,24 @@
 #define KEY_S 115
 #define KEY_D 100
 
-Scene::Scene() : m_object("objects/android.txt"), m_light(GL_LIGHT0, Point(0, 3, 5), Vector(0, -.5, -1)), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
+Scene::Scene() : m_object("objects/iphone.txt"), m_light(GL_LIGHT0, Point(2, 2, 2), Light::POSITIONAL), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
 }
 
 // fonction appelée juste avant glutMainLoop
 GLvoid Scene::init() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	
+		
+	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
 	
-	m_light.setDiffuse(1, 0, 0);
-	m_light.setCutoff(10);
-	m_light.setExponent(128);
+	GLfloat lumiere_ambiente[] = {0.5f, 0.5f, 0.5f, 0.0f};
+   	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lumiere_ambiente);
+	
+	m_light.setDiffuse(0.7, 0.7, 0.7);
+	m_light.setAmbient(0, 0, 0);
+	m_light.setSpecular(0.9, 0.9, 0.9);
 }
 
 // fonction de modélisation
@@ -41,9 +45,8 @@ GLvoid Scene::display() {
 
 	// Mise en place de la lumière
 	glPushMatrix();
-	glRotated(glutGet(GLUT_ELAPSED_TIME)/2, 0, 1, 0);
-	m_light.place();
-	m_light.enable();
+		m_light.place();
+		m_light.enable();
 	glPopMatrix();
 	
 	
