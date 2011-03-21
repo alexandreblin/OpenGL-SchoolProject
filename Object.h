@@ -12,6 +12,7 @@
 #endif
 
 #include <vector>
+#include <map>
 #include <sstream>
 #include <fstream>
 
@@ -19,6 +20,7 @@
 #include "Vector.h"
 #include "Angle.h"
 #include "Face.h"
+#include "Material.h"
 
 class Object {
 private:
@@ -30,6 +32,8 @@ private:
 	
 	std::vector<Vector> m_faceNormals;
 	std::vector<Vector> m_vertexNormals;
+	
+	std::map<std::string, Material *> m_materials;
 		
 public:
     Object(std::string filename, Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0));
@@ -41,6 +45,8 @@ public:
 	
 private:
 	void loadFromFile(std::string filename);
+	void parseMTLFile(std::string filename);
+	
 	void computeFaceNormals();
 	void computeRemainingNormals();
 	void computeVertexNormals();

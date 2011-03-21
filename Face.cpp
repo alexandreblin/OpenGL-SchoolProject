@@ -1,6 +1,6 @@
 #include "Face.h"
 
-Face::Face() : m_smoothingGroup(0) {}
+Face::Face() : m_smoothingGroup(0), m_material(NULL) {}
 
 std::vector<int> & Face::vertices() {
 	return m_vertices;
@@ -12,6 +12,14 @@ std::vector<int> & Face::texCoords() {
 
 std::vector<int> & Face::normals() {
 	return m_normals;
+}
+
+void Face::setMaterial(Material *mat) {
+	m_material = mat;
+}
+
+Material * Face::material() {
+	return m_material;
 }
 
 void Face::setSmoothingGroup(int s) {

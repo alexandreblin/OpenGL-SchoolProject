@@ -5,7 +5,7 @@
 #define KEY_S 115
 #define KEY_D 100
 
-Scene::Scene() : m_object("objects/iphone.txt"), m_light(GL_LIGHT0, Point(2, 2, 2), Light::POSITIONAL), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
+Scene::Scene() : m_object("objects/iPhone4.obj"), m_light(GL_LIGHT0, Point(2, 2, 2), Light::POSITIONAL), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
 }
 
 // fonction appelée juste avant glutMainLoop
@@ -15,7 +15,7 @@ GLvoid Scene::init() {
 		
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
-	glEnable(GL_COLOR_MATERIAL);
+	//glEnable(GL_COLOR_MATERIAL);
 	
 	GLfloat lumiere_ambiente[] = {0.5f, 0.5f, 0.5f, 0.0f};
    	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lumiere_ambiente);

@@ -2,6 +2,7 @@
 #define FACE_H
 
 #include <vector>
+#include "Material.h"
 
 class Face {
 private:
@@ -10,6 +11,8 @@ private:
 	std::vector<int> m_normals;
 	
 	int m_smoothingGroup;
+	
+	Material *m_material;
 
 public:
 	Face();
@@ -17,6 +20,9 @@ public:
 	std::vector<int> & vertices();
 	std::vector<int> & texCoords();
 	std::vector<int> & normals();
+	
+	void setMaterial(Material *mat);
+	Material * material();
 	
 	void setSmoothingGroup(int s);
 	int smoothingGroup();

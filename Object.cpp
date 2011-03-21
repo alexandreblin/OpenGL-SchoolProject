@@ -23,10 +23,11 @@ void Object::draw() {
 	glRotated(-m_angle.yaw(), 0, 1, 0);
 	glRotated(-m_angle.roll(), 0, 0, 1);
 	
-	for (unsigned int i = 0; i < m_faces.size(); ++i) {
-		glColor3d(0, 0, 1);
-		
+	for (unsigned int i = 0; i < m_faces.size(); ++i) {		
 		Face f = m_faces[i];
+		
+		if (f.material() != NULL)
+			f.material()->apply();
 		
 		if (f.numVertices() == 3)
 			glBegin(GL_TRIANGLES);
@@ -69,6 +70,8 @@ void Object::computeRemainingNormals() {
 		if (face.hasNormals()) continue;
 
 		count++;
+		
+		cout << count << "/" << m_faces.size() << endl;
 		
 		// on boucle sur chaque sommet de la face
 		for (unsigned int j = 0; j < face.vertices().size(); ++j) {
@@ -175,7 +178,7 @@ void Object::loadFromFile(std::string filename) {
 	ifstream file(filename.c_str());
 	
 	int currentSmoothingGroup = 0;
-	
+	Material *currentMat = NULL;
 	string line;
 	while(getline(file, line)) {
 		stringstream str(line);
@@ -198,13 +201,14 @@ void Object::loadFromFile(std::string filename) {
 		else if (type == "f") {
 			Face f;
 			
+			f.setMaterial(currentMat);
 			f.setSmoothingGroup(currentSmoothingGroup);
 			
 			// format : f v/vt/vn, avec vt et vn optionnels
 			while (str.good()) {
 				int v, vt = -1, vn = -1;
 			
-				if (str >> v) {
+				if (str >> v) {						
 					f.vertices().push_back(v-1); // on retire 1 car les numéros commencent à 1 dans le fichier et les tableaux sont indexés à 0
 					
 					// si on a un slash, on tente de lire vt
@@ -221,6 +225,7 @@ void Object::loadFromFile(std::string filename) {
 						if (str.peek() == 47) {
 							str.seekg(1, ios_base::cur);
 							str >> vn;
+								
 							f.normals().push_back(vn-1);
 						}
 					}
@@ -240,6 +245,60 @@ void Object::loadFromFile(std::string filename) {
 			string file;
 			str >> file;
 			cout << "MTL Lib file: " << file << endl;
+			parseMTLFile(file);
+		}
+		else if (type == "usemtl") {
+			string mtl;
+			str >> mtl;
+			currentMat = m_materials[mtl];
+		}
+	}
+	
+	file.close();
+}
+
+void Object::parseMTLFile(std::string filename) {
+	ifstream file(string("objects/" + filename).c_str());
+	
+	string currentMaterial;
+	string line;
+	while(getline(file, line)) {
+		stringstream str(line);
+		
+		string type;	
+		str >> type;
+		
+		if (type == "newmtl") {
+			str >> currentMaterial;
+
+			m_materials[currentMaterial] = new Material();
+		}
+		else if (type == "Ka" || type == "Kd" || type == "Ks") {
+			float r, g, b;
+			
+			str >> r;
+			if (str >> g) {
+			 	str >> b;
+			}
+			else {
+				g = r;
+				b = r;
+			}
+			
+			if (type == "Ka") {
+				m_materials[currentMaterial]->setAmbient(r, g, b);
+			}
+			else if (type == "Kd") {
+				m_materials[currentMaterial]->setDiffuse(r, g, b);
+			}
+			else if (type == "Ks") {
+				m_materials[currentMaterial]->setSpecular(r, g, b);
+			}
+		}
+		else if (type == "map_Ka") {
+			string texture;
+			str >> texture;
+			m_materials[currentMaterial]->setTextureFile(texture);
 		}
 	}
 	
