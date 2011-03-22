@@ -65,7 +65,7 @@ void Object::computeRemainingNormals() {
 	int count = 0;
 	// on boucle sur chaque face de l'objet
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {
-		Face face = m_faces[i];
+		Face & face = m_faces[i];
 		
 		if (face.hasNormals()) continue;
 
