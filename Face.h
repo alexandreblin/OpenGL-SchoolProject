@@ -7,7 +7,7 @@
 class Face {
 private:
 	std::vector<int> m_vertices;
-	std::vector<int> m_texCoords;
+	std::vector<float> m_texCoords;
 	std::vector<int> m_normals;
 	
 	int m_smoothingGroup;
@@ -18,7 +18,7 @@ public:
 	Face();
 	
 	std::vector<int> & vertices();
-	std::vector<int> & texCoords();
+	std::vector<float> & texCoords();
 	std::vector<int> & normals();
 	
 	void setMaterial(Material *mat);

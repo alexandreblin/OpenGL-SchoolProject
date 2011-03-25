@@ -22,6 +22,8 @@
 #include "Face.h"
 #include "Material.h"
 
+#include "lodepng.h"
+
 class Object {
 private:
 	Point m_position;
@@ -34,6 +36,8 @@ private:
 	std::vector<Vector> m_faceNormals;
 	std::vector<Vector> m_vertexNormals;
 	
+	std::vector<std::vector<float> > m_texCoords;
+	
 	std::map<std::string, Material *> m_materials;
 		
 public:
@@ -43,6 +47,8 @@ public:
 	
 	Point & position();
 	Angle & angle();
+	
+	void loadTextures();
 	
 private:
 	void loadFromFile(std::string filename);

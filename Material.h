@@ -21,6 +21,7 @@ private:
 	float m_specular[3];
 	
 	std::string m_textureFile;
+    int m_textureID;
 	
 public:
 	Material();
@@ -35,6 +36,9 @@ public:
 	
 	std::string textureFile();
 	void setTextureFile(std::string file);
+	
+    int textureID();
+    void setTextureID(int id);
 	
 	void apply();
 };

@@ -1,6 +1,6 @@
 #include "Material.h"
 
-Material::Material() : m_textureFile() {
+Material::Material() : m_textureFile(), m_textureID(0) {
 	// valeurs par défaut
 	// http://www.opengl.org/sdk/docs/man/xhtml/glMaterial.xml
 	
@@ -55,8 +55,18 @@ void Material::setTextureFile(std::string file) {
 	m_textureFile = file;
 }
 
+int Material::textureID() {
+    return m_textureID;
+}
+
+void Material::setTextureID(int id) {
+    m_textureID = id;
+}
+
 void Material::apply() {
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
+	
+    glBindTexture(GL_TEXTURE_2D, textureID());
 }

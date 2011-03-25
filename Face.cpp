@@ -6,7 +6,7 @@ std::vector<int> & Face::vertices() {
 	return m_vertices;
 }
 
-std::vector<int> & Face::texCoords() {
+std::vector<float> & Face::texCoords() {
 	return m_texCoords;
 }
 

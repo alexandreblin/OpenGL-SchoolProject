@@ -19,7 +19,7 @@ private:
 	Application();
 	
 	static Application *appInstance;
-	Scene m_scene;
+	Scene *m_scene;
 	
 public:
 	static Application* instance() {
@@ -31,7 +31,7 @@ public:
 	
 	void setup(int *argc, char *argv[], std::string windowName);
 	
-	Scene & scene();
+	Scene * scene();
 	
 	static GLvoid reshapeCallback(GLsizei width, GLsizei height);
 	static GLvoid displayCallback();

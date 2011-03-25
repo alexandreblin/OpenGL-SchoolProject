@@ -5,17 +5,18 @@
 #define KEY_S 115
 #define KEY_D 100
 
-Scene::Scene() : m_object("objects/iPhone4.obj"), m_light(GL_LIGHT0, Point(2, 2, 2), Light::POSITIONAL), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
+Scene::Scene() : m_object("objects/malp.obj", Point(0, -0.2, 3.5), Angle(0, 0, 0), Vector(0.01, 0.01, 0.01)), m_light(GL_LIGHT0, Point(-2, 2, 2), Light::POSITIONAL), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
 }
 
 // fonction appelée juste avant glutMainLoop
 GLvoid Scene::init() {
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-		
+	
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_LIGHTING);
-	//glEnable(GL_COLOR_MATERIAL);
+		
+	glEnable(GL_TEXTURE_2D);
 	
 	GLfloat lumiere_ambiente[] = {0.5f, 0.5f, 0.5f, 0.0f};
    	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lumiere_ambiente);
@@ -67,7 +68,7 @@ GLvoid Scene::reshape(GLsizei width, GLsizei height) {
 	glMatrixMode(GL_PROJECTION);
 	
 	glLoadIdentity();
-	gluPerspective(45, (GLdouble)width/(GLdouble)height, 1, 100);
+	gluPerspective(45, (GLdouble)width/(GLdouble)height, 0.1, 100);
 	
 	glMatrixMode(GL_MODELVIEW);
 }

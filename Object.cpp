@@ -8,8 +8,10 @@ Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_p
 	computeFaceNormals();
 	computeRemainingNormals();
 	//computeVertexNormals();
-	
-	scaleVertices(m_scale);
+		
+    loadTextures();
+    
+    scaleVertices(m_scale);
 }
 
 void Object::draw() {
@@ -35,11 +37,14 @@ void Object::draw() {
 			std::cout << "Invalid face " << i << std::endl;
 			continue;
 		}
-		
+			
 		for (unsigned int j = 0; j < f.numVertices(); ++j) {
 			Point vertex = m_vertices[f.vertices()[j]];
 			Point normal = m_vertexNormals[f.normals()[j]];
 			
+			std::vector<float> texCoords = m_texCoords[f.texCoords()[j]];
+			
+			glTexCoord2f(texCoords[0], texCoords[1]);
 			glNormal3d(normal.x(), normal.y(), normal.z());
 			glVertex3d(vertex.x(), vertex.y(), vertex.z());
 		}
@@ -203,6 +208,16 @@ void Object::loadFromFile(std::string filename) {
 				m_vertexNormals.push_back(Vector(x, y, z));
 			}
 		}
+		else if (type == "vt") {
+			float x, y;
+			std::vector<float> coords;
+			
+			str >> x >> y;
+			coords.push_back(x);
+			coords.push_back(y);
+			
+			m_texCoords.push_back(coords);
+		}
 		else if (type == "f") {
 			Face f;
 			
@@ -308,4 +323,73 @@ void Object::parseMTLFile(std::string filename) {
 	}
 	
 	file.close();
+}
+
+void Object::loadTextures() {
+    std::vector<Material *> texturesToLoad;
+    
+	map<string, Material *>::iterator it;
+	for (it = m_materials.begin(); it != m_materials.end(); it++) {
+        Material *m = it->second;
+        if (!m->textureFile().empty())
+            texturesToLoad.push_back(m);
+	}
+	
+    GLuint IDs[texturesToLoad.size()];
+    glGenTextures(texturesToLoad.size(), IDs);
+	
+	// FIXME: nettoyer ça
+    for (unsigned int i = 0; i < texturesToLoad.size(); ++i) {
+        texturesToLoad[i]->setTextureID(IDs[i]);
+        
+    	std::vector<unsigned char> buffer, image;
+    	LodePNG::loadFile(buffer, "objects/textures/" + texturesToLoad[i]->textureFile());
+    	LodePNG::Decoder decoder;
+    	decoder.decode(image, buffer.empty() ? 0 : &buffer[0], (unsigned)buffer.size());
+
+    	//
+    	// Flip and invert the PNG image since OpenGL likes to load everything
+    	// backwards from what is considered normal!
+    	//
+
+    	unsigned char *imagePtr = &image[0];
+    	int halfTheHeightInPixels = decoder.getHeight() / 2;
+    	int heightInPixels = decoder.getHeight();
+
+    	// Assuming RGBA for 4 components per pixel.
+    	int numColorComponents = 4;
+
+    	// Assuming each color component is an unsigned char.
+    	int widthInChars = decoder.getWidth() * numColorComponents;
+
+    	unsigned char *top = NULL;
+    	unsigned char *bottom = NULL;
+    	unsigned char temp = 0;
+
+    	for( int h = 0; h < halfTheHeightInPixels; ++h )
+    	{
+    	    top = imagePtr + h * widthInChars;
+    	    bottom = imagePtr + (heightInPixels - h - 1) * widthInChars;
+
+    	    for( int w = 0; w < widthInChars; ++w )
+    	    {
+    	        // Swap the chars around.
+    	        temp = *top;
+    	        *top = *bottom;
+    	        *bottom = temp;
+
+    	        ++top;
+    	        ++bottom;
+    	    }
+    	}
+	    
+    	glBindTexture(GL_TEXTURE_2D, texturesToLoad[i]->textureID());
+	
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, decoder.getWidth(), decoder.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
+	}
 }
