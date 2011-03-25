@@ -2,18 +2,14 @@
 
 using namespace std;
 
-Object::Object(std::string filename, Point pos, Angle angle) : m_position(pos), m_angle(angle) {
+Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_position(pos), m_angle(angle), m_scale(scale) {
 	loadFromFile(filename);
 	
 	computeFaceNormals();
 	computeRemainingNormals();
 	//computeVertexNormals();
 	
-	/*for (unsigned int i = 0; i < m_vertices.size(); ++i) {
-		m_vertices[i].setX(m_vertices[i].x() * 0.01);
-		m_vertices[i].setY(m_vertices[i].y() * 0.01);
-		m_vertices[i].setZ(m_vertices[i].z() * 0.01);
-	}*/
+	scaleVertices(m_scale);
 }
 
 void Object::draw() {
@@ -172,6 +168,15 @@ Point Object::getFaceCenter(Face f) {
 	center.setZ(center.z() / numVertices);
 	
 	return center;
+}
+
+
+void Object::scaleVertices(Vector scale) {
+    for (unsigned int i = 0; i < m_vertices.size(); ++i) {
+        m_vertices[i].setX(m_vertices[i].x() * scale.x());
+        m_vertices[i].setY(m_vertices[i].y() * scale.y());
+        m_vertices[i].setZ(m_vertices[i].z() * scale.z());
+    }
 }
 
 void Object::loadFromFile(std::string filename) {
