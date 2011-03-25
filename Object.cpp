@@ -78,7 +78,7 @@ void Object::computeRemainingNormals() {
 				}
 			}
 			
-			m_vertexNormals.push_back(normal);
+			m_vertexNormals.push_back(normal.normalized());
 			face.normals().push_back(m_vertexNormals.size()-1);
 		}		
 	}
