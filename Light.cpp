@@ -1,4 +1,4 @@
-#import "Light.h"
+#include "Light.h"
 
 Light::Light(GLenum lightNum, Point position, Light::Type type) : m_lightNum(lightNum), m_position(position), m_type(type) {
 }

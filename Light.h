@@ -11,7 +11,7 @@
 #include <GL/glu.h>
 #endif
 
-#include "Point.h";
+#include "Point.h"
 
 class Light {
 public:
