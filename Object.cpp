@@ -23,8 +23,7 @@ void Object::draw() {
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {		
 		Face & f = m_faces[i];
 		
-		if (f.material() != NULL)
-			f.material()->apply();
+		f.material()->apply();
 
 		glBegin(GL_POLYGON);
 		
@@ -151,7 +150,8 @@ void Object::loadFromFile(std::string filename) {
 	ifstream file(filename.c_str());
 	
 	int currentSmoothingGroup = 0;
-	Material *currentMat = NULL;
+	Material *defaultMat = new Material();
+	Material *currentMat = defaultMat;
 	string line;
 	while(getline(file, line)) {
 		stringstream str(line);
@@ -232,8 +232,10 @@ void Object::loadFromFile(std::string filename) {
 		}
 		else if (type == "usemtl") {
 			string mtl;
-			str >> mtl;
-			currentMat = m_materials[mtl];
+			if (str >> mtl)
+				currentMat = m_materials[mtl];
+			else
+				currentMat = defaultMat;
 		}
 	}
 	
