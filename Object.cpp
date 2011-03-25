@@ -21,29 +21,22 @@ void Object::draw() {
 	glRotated(-m_angle.roll(), 0, 0, 1);
 	
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {		
-		Face f = m_faces[i];
+		Face & f = m_faces[i];
 		
 		if (f.material() != NULL)
 			f.material()->apply();
+
+		glBegin(GL_POLYGON);
 		
-		if (f.numVertices() == 3)
-			glBegin(GL_TRIANGLES);
-		else if (f.numVertices() == 4)
-			glBegin(GL_QUADS);
-		else if (f.numVertices() > 4)
-			glBegin(GL_POLYGON);
-		else {
-			std::cout << "Invalid face " << i << std::endl;
-			continue;
-		}
-			
 		for (unsigned int j = 0; j < f.numVertices(); ++j) {
-			Point vertex = m_vertices[f.vertices()[j]];
-			Point normal = m_vertexNormals[f.normals()[j]];
+			Point & vertex = m_vertices[f.vertices()[j]];
+			Point & normal = m_vertexNormals[f.normals()[j]];
 			
-			std::vector<float> texCoords = m_texCoords[f.texCoords()[j]];
+			if (f.hasTexCoords()) {
+				std::vector<float> & texCoords = m_texCoords[f.texCoords()[j]];
+				glTexCoord2f(texCoords[0], texCoords[1]);
+			}
 			
-			glTexCoord2f(texCoords[0], texCoords[1]);
 			glNormal3d(normal.x(), normal.y(), normal.z());
 			glVertex3d(vertex.x(), vertex.y(), vertex.z());
 		}

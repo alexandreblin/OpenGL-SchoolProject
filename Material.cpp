@@ -68,5 +68,5 @@ void Material::apply() {
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 	
-    glBindTexture(GL_TEXTURE_2D, textureID());
+    glBindTexture(GL_TEXTURE_2D, m_textureID);
 }
