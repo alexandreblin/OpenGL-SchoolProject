@@ -1,6 +1,6 @@
 #include "Material.h"
 
-Material::Material() : m_textureFile(), m_textureID(0) {
+Material::Material() : m_shininess(0), m_textureFile(), m_textureID(0) {
 	// valeurs par défaut
 	// http://www.opengl.org/sdk/docs/man/xhtml/glMaterial.xml
 	
@@ -29,6 +29,10 @@ float * Material::specular() {
 	return m_specular;
 }
 
+float Material::shininess() {
+	return m_shininess;
+}
+
 void Material::setAmbient(float r, float g, float b) {
 	m_ambient[0] = r;
 	m_ambient[1] = g;
@@ -45,6 +49,10 @@ void Material::setSpecular(float r, float g, float b) {
 	m_specular[0] = r;
 	m_specular[1] = g;
 	m_specular[2] = b;
+}
+
+void Material::setShininess(float s) {
+	m_shininess = s;
 }
 
 std::string Material::textureFile() {
@@ -67,6 +75,8 @@ void Material::apply() {
 	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diffuse);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
+	
+	glMaterialf(GL_FRONT, GL_SHININESS, m_shininess);
 	
     glBindTexture(GL_TEXTURE_2D, m_textureID);
 }

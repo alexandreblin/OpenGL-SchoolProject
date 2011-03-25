@@ -278,6 +278,11 @@ void Object::parseMTLFile(std::string filename) {
 				m_materials[currentMaterial]->setSpecular(r, g, b);
 			}
 		}
+		else if (type == "Ns") {
+			float shininess;
+			str >> shininess;
+			m_materials[currentMaterial]->setShininess(shininess);
+		}
 		else if (type == "map_Ka") {
 			string texture;
 			str >> texture;
