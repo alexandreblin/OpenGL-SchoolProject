@@ -9,22 +9,22 @@ class Vector : public Point {
 private:
 	
 public:
-	Vector(double x, double y, double z);
+	Vector(float x, float y, float z);
 	Vector(Point a, Point b);
 	Vector(const Vector &v);
 	
-	double length();
+	float length();
 	Vector normalized();
 	
 	static Vector normal(Vector a, Vector b);
 	
 	Vector & operator+=(const Vector &v);
 	Vector & operator-=(const Vector &v);
-	Vector & operator*=(double scalar);
+	Vector & operator*=(float scalar);
 	
 	const Vector operator+(const Vector &v) const;
 	const Vector operator-(const Vector &v) const;
-	const Vector operator*(double scalar) const;
+	const Vector operator*(float scalar) const;
 	
 	friend Point & operator+=(Point &p, const Vector &v);
 	friend Point & operator-=(Point &p, const Vector &v);

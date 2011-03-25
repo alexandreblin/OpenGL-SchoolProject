@@ -5,25 +5,25 @@
 
 class Point {
 protected:
-	double m_x;
-	double m_y;
-	double m_z;
+	float m_x;
+	float m_y;
+	float m_z;
 	
 public:
-	Point(double x, double y, double z);
+	Point(float x, float y, float z);
 	Point(const Point &p);
 	
-	double x() const;
-	double y() const;
-	double z() const;
+	float x() const;
+	float y() const;
+	float z() const;
 	
-	void setX(double x);
-	void setY(double y);
-	void setZ(double z);
+	void setX(float x);
+	void setY(float y);
+	void setZ(float z);
 	
-	void addX(double offset);
-	void addY(double offset);
-	void addZ(double offset);
+	void addX(float offset);
+	void addY(float offset);
+	void addZ(float offset);
 	
 	bool operator==(const Point &other) const;
 	

@@ -1,44 +1,44 @@
 #include "Point.h"
 
-Point::Point(double x, double y, double z) : m_x(x), m_y(y), m_z(z) {
+Point::Point(float x, float y, float z) : m_x(x), m_y(y), m_z(z) {
 }
 
 Point::Point(const Point &p) : m_x(p.m_x), m_y(p.m_y), m_z(p.m_z) {
 }
 
-double Point::x() const {
+float Point::x() const {
 	return m_x;
 }
 
-double Point::y() const {
+float Point::y() const {
 	return m_y;
 }
 
-double Point::z() const {
+float Point::z() const {
 	return m_z;
 }
 
-void Point::setX(double x) {
+void Point::setX(float x) {
 	m_x = x;
 }
 
-void Point::setY(double y) {
+void Point::setY(float y) {
 	m_y = y;
 }
 
-void Point::setZ(double z) {
+void Point::setZ(float z) {
 	m_z = z;
 }
 
-void Point::addX(double offset) {
+void Point::addX(float offset) {
 	m_x += offset;
 }
 
-void Point::addY(double offset) {
+void Point::addY(float offset) {
 	m_y += offset;
 }
 
-void Point::addZ(double offset) {
+void Point::addZ(float offset) {
 	m_z += offset;
 }
 

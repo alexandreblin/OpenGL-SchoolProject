@@ -1,6 +1,6 @@
 #include "Vector.h"
 
-Vector::Vector(double x, double y, double z) : Point(x, y, z) {
+Vector::Vector(float x, float y, float z) : Point(x, y, z) {
 }
 
 Vector::Vector(Point a, Point b) : Point(b.x() - a.x(), b.y() - a.y(), b.z() - a.z()) {
@@ -10,12 +10,12 @@ Vector::Vector(const Vector &v) : Point(v) {
 }
 
 
-double Vector::length() {
+float Vector::length() {
 	return sqrt(m_x*m_x + m_y*m_y + m_z*m_z);
 }
 
 Vector Vector::normalized() {
-	double l = length();
+	float l = length();
 	
 	if (l != 0)
 		return Vector(m_x/l, m_y/l, m_z/l);
@@ -46,7 +46,7 @@ Vector & Vector::operator-=(const Vector &v) {
 	return *this;
 }
 
-Vector & Vector::operator*=(double scalar) {
+Vector & Vector::operator*=(float scalar) {
 	m_x *= scalar;
 	m_y *= scalar;
 	m_z *= scalar;
@@ -70,7 +70,7 @@ const Vector Vector::operator-(const Vector &v) const {
 	return res;
 }
 
-const Vector Vector::operator*(double scalar) const {
+const Vector Vector::operator*(float scalar) const {
 	Vector res = *this;
 	
 	res *= scalar;

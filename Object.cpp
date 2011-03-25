@@ -14,11 +14,11 @@ Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_p
 }
 
 void Object::draw() {
-	glTranslated(m_position.x(), m_position.y(), m_position.z());
+	glTranslatef(m_position.x(), m_position.y(), m_position.z());
 	
-	glRotated(-m_angle.pitch(), 1, 0, 0);
-	glRotated(-m_angle.yaw(), 0, 1, 0);
-	glRotated(-m_angle.roll(), 0, 0, 1);
+	glRotatef(-m_angle.pitch(), 1, 0, 0);
+	glRotatef(-m_angle.yaw(), 0, 1, 0);
+	glRotatef(-m_angle.roll(), 0, 0, 1);
 	
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {		
 		Face & f = m_faces[i];
@@ -36,8 +36,8 @@ void Object::draw() {
 				glTexCoord2f(texCoords[0], texCoords[1]);
 			}
 			
-			glNormal3d(normal.x(), normal.y(), normal.z());
-			glVertex3d(vertex.x(), vertex.y(), vertex.z());
+			glNormal3f(normal.x(), normal.y(), normal.z());
+			glVertex3f(vertex.x(), vertex.y(), vertex.z());
 		}
 		
 		glEnd();
@@ -160,7 +160,7 @@ void Object::loadFromFile(std::string filename) {
 		str >> type;
 
 		if (type == "v" || type == "vn") {
-			double x, y, z;
+			float x, y, z;
 			
 			str >> x >> y >> z;
 			

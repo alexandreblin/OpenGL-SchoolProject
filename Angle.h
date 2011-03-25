@@ -8,25 +8,25 @@
 
 class Angle {
 private:
-	double m_pitch;
-	double m_yaw;
-	double m_roll;
+	float m_pitch;
+	float m_yaw;
+	float m_roll;
 
 public:
-	Angle(double pitch = 0, double yaw = 0, double roll = 0);
+	Angle(float pitch = 0, float yaw = 0, float roll = 0);
 	
 	Vector direction();
 	
-	double pitch();
-	double yaw();
-	double roll();
+	float pitch();
+	float yaw();
+	float roll();
 	
-	void setPitch(double pitch);
-	void setYaw(double yaw);
-	void setRoll(double roll);	
-	void addPitch(double pitch);
-	void addYaw(double yaw);
-	void addRoll(double roll);
+	void setPitch(float pitch);
+	void setYaw(float yaw);
+	void setRoll(float roll);	
+	void addPitch(float pitch);
+	void addYaw(float yaw);
+	void addRoll(float roll);
 };
 
 #endif

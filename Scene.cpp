@@ -36,12 +36,12 @@ GLvoid Scene::display() {
 
 	// Mise en place de la caméra
 	if (m_cameraAngle.pitch() != 0)
-		glRotated(-m_cameraAngle.pitch(), 1, 0, 0);
+		glRotatef(-m_cameraAngle.pitch(), 1, 0, 0);
 		
 	if (m_cameraAngle.yaw() != 0)
-		glRotated(-m_cameraAngle.yaw(), 0, 1, 0);
+		glRotatef(-m_cameraAngle.yaw(), 0, 1, 0);
 
-	glTranslated(-m_cameraPos.x(), -m_cameraPos.y(), -m_cameraPos.z());
+	glTranslatef(-m_cameraPos.x(), -m_cameraPos.y(), -m_cameraPos.z());
 
 
 	// Mise en place de la lumière
@@ -131,8 +131,8 @@ GLvoid Scene::mouseMove(int x, int y) {
 		// on fait tourner la caméra proportionellement aux dimensions de la
 		// fenêtre pour que le mouvement soit uniforme quelle que soit sa taille
 
-		m_cameraAngle.addYaw(deltaX/(double)glutGet(GLUT_WINDOW_WIDTH) * 180);
-		m_cameraAngle.addPitch(deltaY/(double)glutGet(GLUT_WINDOW_HEIGHT) * 180);
+		m_cameraAngle.addYaw(deltaX/(float)glutGet(GLUT_WINDOW_WIDTH) * 180);
+		m_cameraAngle.addPitch(deltaY/(float)glutGet(GLUT_WINDOW_HEIGHT) * 180);
 		
 		m_oldMouseX = x;
 		m_oldMouseY = y;

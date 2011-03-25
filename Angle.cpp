@@ -1,49 +1,49 @@
 #include "Angle.h"
 
-Angle::Angle(double pitch, double yaw, double roll) : m_pitch(pitch), m_yaw(yaw), m_roll(roll) {
+Angle::Angle(float pitch, float yaw, float roll) : m_pitch(pitch), m_yaw(yaw), m_roll(roll) {
 }
 
 // retourne un vecteur normalisé pointant dans la direction de l'angle
 Vector Angle::direction() {
 	// angles en radians
-	double yawRad = m_yaw / 180 * PI;
-	double pitchRad = m_pitch / 180 * PI;
+	float yawRad = m_yaw / 180 * PI;
+	float pitchRad = m_pitch / 180 * PI;
 	
 	return Vector(sin(yawRad+PI) * cos(pitchRad), sin(pitchRad), cos(yawRad+PI) * cos(pitchRad)).normalized();
 }
 
-double Angle::pitch() {
+float Angle::pitch() {
 	return m_pitch;
 }
 
-double Angle::yaw() {
+float Angle::yaw() {
 	return m_yaw;
 }
 
-double Angle::roll() {
+float Angle::roll() {
 	return m_roll;
 }
 
-void Angle::setPitch(double pitch) {
+void Angle::setPitch(float pitch) {
 	m_pitch = pitch;
 }
 
-void Angle::setYaw(double yaw) {
+void Angle::setYaw(float yaw) {
 	m_yaw = yaw;
 }
 
-void Angle::setRoll(double roll) {
+void Angle::setRoll(float roll) {
 	m_roll = roll;
 }
 
-void Angle::addPitch(double pitch) {
+void Angle::addPitch(float pitch) {
 	m_pitch += pitch;
 }
 
-void Angle::addYaw(double yaw) {
+void Angle::addYaw(float yaw) {
 	m_yaw += yaw;
 }
 
-void Angle::addRoll(double roll) {
+void Angle::addRoll(float roll) {
 	m_roll += roll;
 }
