@@ -7,8 +7,7 @@ Object::Object(std::string filename, Point pos, Angle angle, Vector scale) : m_p
 	
 	computeFaceNormals();
 	computeRemainingNormals();
-	//computeVertexNormals();
-		
+	
     loadTextures();
     
     scaleVertices(m_scale);
@@ -72,7 +71,8 @@ void Object::computeRemainingNormals() {
 
 		count++;
 		
-		cout << count << "/" << m_faces.size() << endl;
+		if (count % 1000 == 0)
+			cout << count << "/" << m_faces.size() << endl;
 		
 		// on boucle sur chaque sommet de la face
 		for (unsigned int j = 0; j < face.vertices().size(); ++j) {
@@ -124,36 +124,6 @@ void Object::computeFaceNormals() {
 		}
 		
 		cout << "Face normals computed!" << endl;
-	}
-}
-
-void Object::computeVertexNormals() {
-	if (m_vertexNormals.size() != m_vertices.size()) {
-		cout << "Computing vertex normals..." << endl;
-		
-		m_vertexNormals.clear();
-		
-		for (unsigned int i = 0; i < m_vertices.size(); ++i) {
-			// on boucle sur chaque sommet de l'objet
-
-			cout << i+1 << "/" << m_vertices.size() << endl;
-		
-			Vector normal(0, 0, 0);
-		
-			for (unsigned int j = 0; j < m_faces.size(); ++j) {
-				// on boucle sur chaque face de l'objet
-				Face face = m_faces[j];
-				
-				if (find(face.vertices().begin(), face.vertices().end(), i) != face.vertices().end()) {
-					// si la face contient notre sommet, on ajoute sa normale
-					normal += m_faceNormals[j];
-				}
-			}
-			
-			m_vertexNormals.push_back(normal.normalized());
-		}
-
-		cout << "Vertex normals computed!" << endl;
 	}
 }
 

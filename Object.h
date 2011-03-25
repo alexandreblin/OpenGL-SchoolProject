@@ -58,7 +58,6 @@ private:
     
 	void computeFaceNormals();
 	void computeRemainingNormals();
-	void computeVertexNormals();
 	
 	Point getFaceCenter(Face f);
 };
