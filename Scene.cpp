@@ -32,7 +32,8 @@ GLvoid Scene::display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
-
+	
+	printFramerate();
 
 	// Mise en place de la caméra
 	if (m_cameraAngle.pitch() != 0)
@@ -60,6 +61,19 @@ GLvoid Scene::display() {
 	
 	
 	glutSwapBuffers();
+}
+
+void Scene::printFramerate() {
+	static int nextTime = glutGet(GLUT_ELAPSED_TIME) + 1000;
+	static int nbFrame = 0;
+	
+	if (glutGet(GLUT_ELAPSED_TIME) >= nextTime) {
+		std::cout << "FPS: " << nbFrame << std::endl;
+		nbFrame = 0;
+		nextTime = glutGet(GLUT_ELAPSED_TIME) + 1000;
+	}
+	
+	nbFrame++;
 }
 
 GLvoid Scene::reshape(GLsizei width, GLsizei height) {

@@ -39,6 +39,9 @@ public:
 	GLvoid keyPress(int key, int mouseX, int mouseY, bool specialKey = false);
 	GLvoid mousePress(int button, int state, int x, int y);
 	GLvoid mouseMove(int x, int y);
+
+private:
+	void printFramerate();
 };
 
 #endif
