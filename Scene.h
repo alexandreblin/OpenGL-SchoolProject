@@ -29,7 +29,6 @@ private:
 	Point m_cameraPos;
 	Angle m_cameraAngle;
 	
-	bool m_freeLook;
 	// variables permettant de calculer le déplacement relatif de la souris
 	int m_oldMouseX;
 	int m_oldMouseY;

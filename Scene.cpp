@@ -11,9 +11,7 @@ Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					
 					m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL),
 					
-					m_cameraPos(Point(0, 1, 4)),
-					
-					m_freeLook(false)
+					m_cameraPos(Point(0, 1, 4))
 {}
 
 // fonction appelée juste avant glutMainLoop
@@ -140,8 +138,6 @@ GLvoid Scene::mousePress(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON) {
 		// on peut regarder autour de nous en restant appuyé
 		// sur le bouton gauche de la souris
-		
-		m_freeLook = (state == GLUT_DOWN);
 	
 		m_oldMouseX = x;
 		m_oldMouseY = y;
@@ -149,17 +145,15 @@ GLvoid Scene::mousePress(int button, int state, int x, int y) {
 }
 
 GLvoid Scene::mouseMove(int x, int y) {
-	if (m_freeLook) {
-		int deltaX = m_oldMouseX - x;
-		int deltaY = m_oldMouseY - y;
-		
-		// on fait tourner la caméra proportionellement aux dimensions de la
-		// fenêtre pour que le mouvement soit uniforme quelle que soit sa taille
+	int deltaX = m_oldMouseX - x;
+	int deltaY = m_oldMouseY - y;
+	
+	// on fait tourner la caméra proportionellement aux dimensions de la
+	// fenêtre pour que le mouvement soit uniforme quelle que soit sa taille
 
-		m_cameraAngle.addYaw(deltaX/(float)glutGet(GLUT_WINDOW_WIDTH) * 180);
-		m_cameraAngle.addPitch(deltaY/(float)glutGet(GLUT_WINDOW_HEIGHT) * 180);
-		
-		m_oldMouseX = x;
-		m_oldMouseY = y;
-	}
+	m_cameraAngle.addYaw(deltaX/(float)glutGet(GLUT_WINDOW_WIDTH) * 180);
+	m_cameraAngle.addPitch(deltaY/(float)glutGet(GLUT_WINDOW_HEIGHT) * 180);
+	
+	m_oldMouseX = x;
+	m_oldMouseY = y;
 }
