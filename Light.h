@@ -21,6 +21,7 @@ public:
 	};
 	
 	static void setGlobalAmbientLight(float r, float g, float b);
+	static void setGlobalAmbientLight(float v);
 
 protected:
 	GLenum m_lightNum;
@@ -35,6 +36,10 @@ public:
 	void setDiffuse(float r, float g, float b);
 	void setSpecular(float r, float g, float b);
 	void setAmbient(float r, float g, float b);
+	
+	void setDiffuse(float v);
+	void setSpecular(float v);
+	void setAmbient(float v);
 	
 	Point & position();
 	

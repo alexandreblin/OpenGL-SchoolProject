@@ -5,6 +5,10 @@ void Light::setGlobalAmbientLight(float r, float g, float b) {
    	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
 }
 
+void Light::setGlobalAmbientLight(float v) {
+	Light::setGlobalAmbientLight(v, v, v);
+}
+
 Light::Light(GLenum lightNum, Point position, Light::Type type) : m_lightNum(lightNum), m_position(position), m_type(type) {
 }
 
@@ -26,6 +30,18 @@ void Light::setSpecular(float r, float g, float b) {
 void Light::setAmbient(float r, float g, float b) {
 	float ambient[4] = {r, g, b, 1};
 	glLightfv(m_lightNum, GL_AMBIENT, ambient);
+}
+
+void Light::setDiffuse(float v) {
+	setDiffuse(v, v, v);
+}
+
+void Light::setSpecular(float v) {
+	setSpecular(v, v, v);
+}
+
+void Light::setAmbient(float v) {
+	setAmbient(v, v, v);
 }
 
 void Light::enable() {

@@ -17,11 +17,11 @@ GLvoid Scene::init() {
 		
 	glEnable(GL_TEXTURE_2D);
 	
-	Light::setGlobalAmbientLight(0.1, 0.1, 0.1);
+	Light::setGlobalAmbientLight(0.1);
 	
-	m_light.setDiffuse(.9, .9, .9);
-	m_light.setAmbient(0, 0, 0);
-	m_light.setSpecular(1, 1, 1);
+	m_light.setDiffuse(0.9);
+	m_light.setAmbient(0);
+	m_light.setSpecular(1);
 }
 
 // fonction de modélisation
