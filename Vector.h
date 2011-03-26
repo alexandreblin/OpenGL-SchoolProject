@@ -9,7 +9,7 @@ class Vector : public Point {
 private:
 	
 public:
-	Vector(float x, float y, float z);
+	Vector(float x = 0, float y = 0, float z = 0);
 	Vector(Point a, Point b);
 	Vector(const Vector &v);
 	

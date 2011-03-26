@@ -10,7 +10,7 @@ protected:
 	float m_z;
 	
 public:
-	Point(float x, float y, float z);
+	Point(float x = 0, float y = 0, float z = 0);
 	Point(const Point &p);
 	
 	float x() const;
