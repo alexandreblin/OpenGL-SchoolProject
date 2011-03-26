@@ -5,7 +5,7 @@
 #define KEY_S 115
 #define KEY_D 100
 
-Scene::Scene() : m_object("objects/malp.obj", Point(0, -0.2, 3.5), Angle(0, 0, 0), Vector(0.01, 0.01, 0.01)), m_light(GL_LIGHT0, Point(-2, 2, 2), Light::POSITIONAL), m_cameraPos(Point(0, 0, 5)), m_freeLook(false) {
+Scene::Scene() : m_skybox("objects/skybox.obj"), m_ground("objects/ground.obj"), m_malp("objects/malp.obj", Point(0, 0, 0), Angle(0, 0, 0), Vector(0.02, 0.02, 0.02)), m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL), m_cameraPos(Point(0, 1, 4)), m_freeLook(false) {
 }
 
 // fonction appelée juste avant glutMainLoop
@@ -17,12 +17,12 @@ GLvoid Scene::init() {
 		
 	glEnable(GL_TEXTURE_2D);
 	
-	GLfloat lumiere_ambiente[] = {0.5f, 0.5f, 0.5f, 0.0f};
+	GLfloat lumiere_ambiente[] = {0.1f, 0.1f, 0.1f, 0.0f};
    	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lumiere_ambiente);
 	
-	m_light.setDiffuse(0.7, 0.7, 0.7);
+	m_light.setDiffuse(.9, .9, .9);
 	m_light.setAmbient(0, 0, 0);
-	m_light.setSpecular(0.9, 0.9, 0.9);
+	m_light.setSpecular(1, 1, 1);
 }
 
 // fonction de modélisation
@@ -51,13 +51,24 @@ GLvoid Scene::display() {
 	glPopMatrix();
 	
 	
-	// Dessin des objets
+	// Affichage de la skybox
 	glPushMatrix();
-	{
-		m_object.draw();
-  	}
+		// on désactive l'éclairage, la skybox est toujours illuminée
+		glDisable(GL_LIGHTING);
+		m_skybox.draw();
+		glEnable(GL_LIGHTING);
   	glPopMatrix();
 	
+	
+	// Dessin des objets
+	glPushMatrix();
+		m_ground.draw();
+  	glPopMatrix();
+	
+	glPushMatrix();
+		m_malp.draw();
+  	glPopMatrix();
+
 	
 	glutSwapBuffers();
 }

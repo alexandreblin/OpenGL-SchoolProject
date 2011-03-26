@@ -19,8 +19,12 @@
 
 class Scene {
 private:
-	Object m_object;
+	Object m_skybox;
+	Object m_ground;
+	Object m_malp;
+	
 	Light m_light;
+	
 	
 	Point m_cameraPos;
 	Angle m_cameraAngle;
