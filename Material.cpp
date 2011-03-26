@@ -1,5 +1,7 @@
 #include "Material.h"
 
+std::map<std::string, int> Material::texturesIDs;
+
 Material::Material() : m_shininess(0), m_textureFile(), m_textureID(0) {
 	// valeurs par défaut
 	// http://www.opengl.org/sdk/docs/man/xhtml/glMaterial.xml
@@ -63,12 +65,71 @@ void Material::setTextureFile(std::string file) {
 	m_textureFile = file;
 }
 
-int Material::textureID() {
-    return m_textureID;
-}
+// FIXME: nettoyer cette méthode
+void Material::loadTexture() {
+	if (m_textureFile.empty())
+		return;
+	
+	if (texturesIDs[m_textureFile] > 0) {
+		m_textureID = texturesIDs[m_textureFile];
+		return;
+	}
+	
+	GLuint id;	
+	glGenTextures(1, &id);
+	
+	std::vector<unsigned char> buffer, image;
+	LodePNG::loadFile(buffer, "objects/textures/" + m_textureFile);
+	LodePNG::Decoder decoder;
+	decoder.decode(image, buffer.empty() ? 0 : &buffer[0], (unsigned)buffer.size());
 
-void Material::setTextureID(int id) {
-    m_textureID = id;
+	//
+	// Flip and invert the PNG image since OpenGL likes to load everything
+	// backwards from what is considered normal!
+	//
+
+	unsigned char *imagePtr = &image[0];
+	int halfTheHeightInPixels = decoder.getHeight() / 2;
+	int heightInPixels = decoder.getHeight();
+
+	// Assuming RGBA for 4 components per pixel.
+	int numColorComponents = 4;
+
+	// Assuming each color component is an unsigned char.
+	int widthInChars = decoder.getWidth() * numColorComponents;
+
+	unsigned char *top = NULL;
+	unsigned char *bottom = NULL;
+	unsigned char temp = 0;
+
+	for( int h = 0; h < halfTheHeightInPixels; ++h )
+	{
+	    top = imagePtr + h * widthInChars;
+	    bottom = imagePtr + (heightInPixels - h - 1) * widthInChars;
+
+	    for( int w = 0; w < widthInChars; ++w )
+	    {
+	        // Swap the chars around.
+	        temp = *top;
+	        *top = *bottom;
+	        *bottom = temp;
+
+	        ++top;
+	        ++bottom;
+	    }
+	}
+    
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, decoder.getWidth(), decoder.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
+	
+	m_textureID = id;
+	texturesIDs[m_textureFile] = id;
 }
 
 void Material::apply() {

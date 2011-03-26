@@ -296,70 +296,8 @@ void Object::parseMTLFile(std::string filename) {
 }
 
 void Object::loadTextures() {
-    std::vector<Material *> texturesToLoad;
-    
 	map<string, Material *>::iterator it;
 	for (it = m_materials.begin(); it != m_materials.end(); it++) {
-        Material *m = it->second;
-        if (!m->textureFile().empty())
-            texturesToLoad.push_back(m);
-	}
-	
-    GLuint IDs[texturesToLoad.size()];
-    glGenTextures(texturesToLoad.size(), IDs);
-	
-	// FIXME: nettoyer ça
-    for (unsigned int i = 0; i < texturesToLoad.size(); ++i) {
-        texturesToLoad[i]->setTextureID(IDs[i]);
-        
-    	std::vector<unsigned char> buffer, image;
-    	LodePNG::loadFile(buffer, "objects/textures/" + texturesToLoad[i]->textureFile());
-    	LodePNG::Decoder decoder;
-    	decoder.decode(image, buffer.empty() ? 0 : &buffer[0], (unsigned)buffer.size());
-
-    	//
-    	// Flip and invert the PNG image since OpenGL likes to load everything
-    	// backwards from what is considered normal!
-    	//
-
-    	unsigned char *imagePtr = &image[0];
-    	int halfTheHeightInPixels = decoder.getHeight() / 2;
-    	int heightInPixels = decoder.getHeight();
-
-    	// Assuming RGBA for 4 components per pixel.
-    	int numColorComponents = 4;
-
-    	// Assuming each color component is an unsigned char.
-    	int widthInChars = decoder.getWidth() * numColorComponents;
-
-    	unsigned char *top = NULL;
-    	unsigned char *bottom = NULL;
-    	unsigned char temp = 0;
-
-    	for( int h = 0; h < halfTheHeightInPixels; ++h )
-    	{
-    	    top = imagePtr + h * widthInChars;
-    	    bottom = imagePtr + (heightInPixels - h - 1) * widthInChars;
-
-    	    for( int w = 0; w < widthInChars; ++w )
-    	    {
-    	        // Swap the chars around.
-    	        temp = *top;
-    	        *top = *bottom;
-    	        *bottom = temp;
-
-    	        ++top;
-    	        ++bottom;
-    	    }
-    	}
-	    
-    	glBindTexture(GL_TEXTURE_2D, texturesToLoad[i]->textureID());
-	
-    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, decoder.getWidth(), decoder.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
+        it->second->loadTexture();
 	}
 }

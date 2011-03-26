@@ -12,7 +12,10 @@
 #endif
 
 #include <vector>
+#include <map>
 #include <string>
+
+#include "lodepng.h"
 
 class Material {
 private:
@@ -21,10 +24,13 @@ private:
 	float m_specular[3];
 	float m_shininess;
 	
+	static std::map<std::string, int> texturesIDs;
+	
 	std::string m_textureFile;
     int m_textureID;
 	
 public:
+		
 	Material();
 	
 	float * ambient();
@@ -39,9 +45,8 @@ public:
 	
 	std::string textureFile();
 	void setTextureFile(std::string file);
-	
-    int textureID();
-    void setTextureID(int id);
+
+	void loadTexture();
 	
 	void apply();
 };

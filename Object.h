@@ -23,8 +23,6 @@
 #include "Face.h"
 #include "Material.h"
 
-#include "lodepng.h"
-
 class Object {
 private:
 	Point m_position;
