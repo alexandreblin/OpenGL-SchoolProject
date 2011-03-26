@@ -27,6 +27,12 @@ public:
 	
 	bool operator==(const Point &other) const;
 	
+	Point & operator+=(const Point &p);
+	Point & operator-=(const Point &p);
+	
+	const Point operator+(const Point &p) const;
+	const Point operator-(const Point &p) const;
+	
 	friend std::ostream & operator<<(std::ostream &out, const Point &p);
 };
 

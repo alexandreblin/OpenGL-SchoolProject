@@ -47,3 +47,35 @@ void Angle::addYaw(float yaw) {
 void Angle::addRoll(float roll) {
 	m_roll += roll;
 }
+
+Angle & Angle::operator+=(const Angle &a) {
+	m_pitch += a.m_pitch;
+	m_yaw += a.m_yaw;
+	m_roll += a.m_roll;
+	
+	return *this;
+}
+
+Angle & Angle::operator-=(const Angle &a) {
+	m_pitch -= a.m_pitch;
+	m_yaw -= a.m_yaw;
+	m_roll -= a.m_roll;
+	
+	return *this;
+}
+
+const Angle Angle::operator+(const Angle &a) const {
+	Angle res = *this;
+	
+	res += a;
+	
+	return res;
+}
+
+const Angle Angle::operator-(const Angle &a) const {
+	Angle res = *this;
+	
+	res -= a;
+	
+	return res;
+}

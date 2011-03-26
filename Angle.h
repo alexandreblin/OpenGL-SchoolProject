@@ -27,6 +27,12 @@ public:
 	void addPitch(float pitch);
 	void addYaw(float yaw);
 	void addRoll(float roll);
+	
+	Angle & operator+=(const Angle &v);
+	Angle & operator-=(const Angle &v);
+	
+	const Angle operator+(const Angle &v) const;
+	const Angle operator-(const Angle &v) const;
 };
 
 #endif

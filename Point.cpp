@@ -46,6 +46,38 @@ bool Point::operator==(const Point &other) const {
 	return (m_x == other.m_x && m_y == other.m_y && m_z == other.m_z);
 }
 
+Point & Point::operator+=(const Point &p) {
+	m_x += p.m_x;
+	m_y += p.m_y;
+	m_z += p.m_z;
+	
+	return *this;
+}
+
+Point & Point::operator-=(const Point &p) {
+	m_x -= p.m_x;
+	m_y -= p.m_y;
+	m_z -= p.m_z;
+	
+	return *this;
+}
+
+const Point Point::operator+(const Point &p) const {
+	Point res = *this;
+	
+	res += p;
+	
+	return res;
+}
+
+const Point Point::operator-(const Point &p) const {
+	Point res = *this;
+	
+	res -= p;
+	
+	return res;
+}
+
 std::ostream & operator<<(std::ostream &out, const Point &p) {
 	out << p.m_x << " " << p.m_y << " " << p.m_z;
 	
