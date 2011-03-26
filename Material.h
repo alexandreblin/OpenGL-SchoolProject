@@ -23,6 +23,7 @@ private:
 	float m_diffuse[3];
 	float m_specular[3];
 	float m_shininess;
+	bool m_clamping;
 	
 	static std::map<std::string, int> texturesIDs;
 	static Material * lastApplied;
@@ -43,6 +44,7 @@ public:
 	void setDiffuse(float r, float g, float b);
 	void setSpecular(float r, float g, float b);
 	void setShininess(float s);
+	void setClamping(bool clamping);
 	
 	std::string textureFile();
 	void setTextureFile(std::string file);

@@ -286,9 +286,20 @@ void Object::parseMTLFile(std::string filename) {
 			m_materials[currentMaterial]->setShininess(shininess);
 		}
 		else if (type == "map_Ka") {
-			string texture;
-			str >> texture;
-			m_materials[currentMaterial]->setTextureFile(texture);
+			string value;
+			str >> value;
+			
+			// on vérifie si on a l'option -clamp on après map_Ka
+			if (value == "-clamp") {
+				str >> value;
+				if (value == "on") {
+					m_materials[currentMaterial]->setClamping(true);
+				}
+				
+				str >> value;
+			}
+			
+			m_materials[currentMaterial]->setTextureFile(value);
 		}
 	}
 	

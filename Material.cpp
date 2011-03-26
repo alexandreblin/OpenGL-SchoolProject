@@ -3,7 +3,7 @@
 std::map<std::string, int> Material::texturesIDs;
 Material * Material::lastApplied = NULL;
 
-Material::Material() : m_shininess(0), m_textureFile(), m_textureID(0) {
+Material::Material() : m_shininess(0), m_clamping(false), m_textureFile(), m_textureID(0) {
 	// valeurs par défaut
 	// http://www.opengl.org/sdk/docs/man/xhtml/glMaterial.xml
 	
@@ -56,6 +56,10 @@ void Material::setSpecular(float r, float g, float b) {
 
 void Material::setShininess(float s) {
 	m_shininess = s;
+}
+
+void Material::setClamping(bool clamping) {
+	m_clamping = clamping;
 }
 
 std::string Material::textureFile() {
@@ -122,8 +126,12 @@ void Material::loadTexture() {
     
 	glBindTexture(GL_TEXTURE_2D, id);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	int textureWrap = GL_REPEAT;
+	if (m_clamping)
+		textureWrap = GL_CLAMP_TO_EDGE;
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureWrap);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureWrap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
