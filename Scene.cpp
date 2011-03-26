@@ -120,6 +120,13 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 			break;
 		}
 	}
+	
+	if (m_cameraPos.x() > 29.5) m_cameraPos.setX(29.5);
+	if (m_cameraPos.x() < -29.5) m_cameraPos.setX(-29.5);
+	if (m_cameraPos.y() > 29.5) m_cameraPos.setY(29.5);
+	if (m_cameraPos.y() < -29.5) m_cameraPos.setY(-29.5);
+	if (m_cameraPos.z() > 29.5) m_cameraPos.setZ(29.5);
+	if (m_cameraPos.z() < -29.5) m_cameraPos.setZ(-29.5);
 }
 
 GLvoid Scene::mousePress(int button, int state, int x, int y) {
