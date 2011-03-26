@@ -5,8 +5,16 @@
 #define KEY_S 115
 #define KEY_D 100
 
-Scene::Scene() : m_skybox("objects/skybox.obj"), m_ground("objects/ground.obj"), m_malp("objects/malp.obj", Point(0, 0, 0), Angle(0, 0, 0), Vector(0.02, 0.02, 0.02)), m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL), m_cameraPos(Point(0, 1, 4)), m_freeLook(false) {
-}
+Scene::Scene() : 	m_skybox("objects/skybox.obj"),
+					m_ground("objects/ground.obj"),
+					m_malp("objects/malp.obj", Point(0, 0, 0), Angle(0, 0, 0), Vector(0.02, 0.02, 0.02)),
+					
+					m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL),
+					
+					m_cameraPos(Point(0, 1, 4)),
+					
+					m_freeLook(false)
+{}
 
 // fonction appelée juste avant glutMainLoop
 GLvoid Scene::init() {
