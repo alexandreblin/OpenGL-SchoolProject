@@ -1,5 +1,10 @@
 #include "Light.h"
 
+void Light::setGlobalAmbientLight(float r, float g, float b) {
+	GLfloat ambient[4] = {r, g, b, 0};
+   	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient);
+}
+
 Light::Light(GLenum lightNum, Point position, Light::Type type) : m_lightNum(lightNum), m_position(position), m_type(type) {
 }
 

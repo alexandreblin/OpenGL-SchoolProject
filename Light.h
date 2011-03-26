@@ -19,6 +19,8 @@ public:
 		DIRECTIONAL = 0,
 		POSITIONAL = 1
 	};
+	
+	static void setGlobalAmbientLight(float r, float g, float b);
 
 protected:
 	GLenum m_lightNum;

@@ -17,8 +17,7 @@ GLvoid Scene::init() {
 		
 	glEnable(GL_TEXTURE_2D);
 	
-	GLfloat lumiere_ambiente[] = {0.1f, 0.1f, 0.1f, 0.0f};
-   	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lumiere_ambiente);
+	Light::setGlobalAmbientLight(0.1, 0.1, 0.1);
 	
 	m_light.setDiffuse(.9, .9, .9);
 	m_light.setAmbient(0, 0, 0);
