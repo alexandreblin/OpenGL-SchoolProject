@@ -25,6 +25,7 @@ private:
 	float m_shininess;
 	
 	static std::map<std::string, int> texturesIDs;
+	static Material * lastApplied;
 	
 	std::string m_textureFile;
     int m_textureID;

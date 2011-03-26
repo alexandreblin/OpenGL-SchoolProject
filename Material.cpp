@@ -1,6 +1,7 @@
 #include "Material.h"
 
 std::map<std::string, int> Material::texturesIDs;
+Material * Material::lastApplied = NULL;
 
 Material::Material() : m_shininess(0), m_textureFile(), m_textureID(0) {
 	// valeurs par défaut
@@ -133,11 +134,15 @@ void Material::loadTexture() {
 }
 
 void Material::apply() {
-	glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diffuse);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
+	if (lastApplied != this) {	
+		glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diffuse);
+		glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
 	
-	glMaterialf(GL_FRONT, GL_SHININESS, m_shininess);
+		glMaterialf(GL_FRONT, GL_SHININESS, m_shininess);
 	
-    glBindTexture(GL_TEXTURE_2D, m_textureID);
+	    glBindTexture(GL_TEXTURE_2D, m_textureID);
+	}
+	
+	lastApplied = this;
 }
