@@ -25,7 +25,12 @@ private:
 	
 	Light m_light;
 	
+	enum CameraMode {
+		FIRSTPERSON,
+		FREELOOK
+	};
 	
+	CameraMode m_cameraMode;
 	Point m_cameraPos;
 	Angle m_cameraAngle;
 	

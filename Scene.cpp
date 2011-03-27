@@ -4,13 +4,15 @@
 #define KEY_Q 113
 #define KEY_S 115
 #define KEY_D 100
+#define KEY_C 99
 
 Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					m_ground("objects/ground.obj"),
-					m_malp("objects/malp.obj"),
+					m_malp("objects/malp.obj", Point(0, 0, 0), Angle(0, 90, 0)),
 					
 					m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL),
 					
+					m_cameraMode(FREELOOK),
 					m_cameraPos(Point(0, 1, 4))
 {}
 
@@ -40,6 +42,11 @@ GLvoid Scene::display() {
 	printFramerate();
 
 	// Mise en place de la caméra
+	if (m_cameraMode == FIRSTPERSON) {
+		m_cameraAngle = Angle(0, -m_malp.angle().yaw() + 180, 0);
+		m_cameraPos = m_malp.position() + Vector::normal(m_cameraAngle.direction(), Vector(0, 1, 0))*-0.25 + Point(0, 1.2, 0);
+	}
+	
 	if (m_cameraAngle.pitch() != 0)
 		glRotatef(-m_cameraAngle.pitch(), 1, 0, 0);
 		
@@ -123,6 +130,9 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 		case KEY_D:
 			m_cameraPos += perp * 0.2;
 			break;
+		case KEY_C:
+			m_cameraMode = (m_cameraMode == FREELOOK ? FIRSTPERSON : FREELOOK);
+			break;
 		}
 	}
 	
@@ -135,6 +145,9 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 }
 
 GLvoid Scene::mousePress(int button, int state, int x, int y) {
+	if (m_cameraMode != FREELOOK)
+		return;
+	
 	if (button == GLUT_LEFT_BUTTON) {
 		// on peut regarder autour de nous en restant appuyé
 		// sur le bouton gauche de la souris
@@ -145,6 +158,9 @@ GLvoid Scene::mousePress(int button, int state, int x, int y) {
 }
 
 GLvoid Scene::mouseMove(int x, int y) {
+	if (m_cameraMode != FREELOOK)
+		return;
+	
 	int deltaX = m_oldMouseX - x;
 	int deltaY = m_oldMouseY - y;
 	
