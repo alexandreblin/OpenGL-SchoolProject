@@ -12,6 +12,7 @@
 #endif
 
 #include "Mesh.h"
+#include "MALP.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Angle.h"
@@ -21,7 +22,7 @@ class Scene {
 private:
 	Mesh m_skybox;
 	Mesh m_ground;
-	Mesh m_malp;
+	MALP m_malp;
 	
 	Light m_light;
 	

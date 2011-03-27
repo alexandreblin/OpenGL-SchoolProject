@@ -8,7 +8,7 @@
 
 Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					m_ground("objects/ground.obj"),
-					m_malp("objects/malp.obj", Point(0, 0, 0), Angle(0, 90, 0)),
+					m_malp(Point(0, 0, 0), Angle(0, 90, 0)),
 					
 					m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL),
 					

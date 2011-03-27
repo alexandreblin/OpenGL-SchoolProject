@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 22.03.2011 12:27:21
+# File Created: 27.03.2011 17:35:23
 
-newmtl Material__2
+newmtl Wheel
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -12,12 +12,10 @@ newmtl Material__2
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka textures/body.png
-	map_Kd textures/body.png
-	map_bump textures/body_NRM.png
-	bump textures/body_NRM.png
+	map_Ka ../textures/malp/wheel.png
+	map_Kd ../textures/malp/wheel.png
 
-newmtl Material__0
+newmtl Props
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -28,10 +26,10 @@ newmtl Material__0
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka textures/antennas.png
-	map_Kd textures/antennas.png
+	map_Ka ../textures/malp/props.png
+	map_Kd ../textures/malp/props.png
 
-newmtl Material__1
+newmtl Arm
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -42,12 +40,10 @@ newmtl Material__1
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka textures/arm.png
-	map_Kd textures/arm.png
-	map_bump textures/arm_NRM.png
-	bump textures/arm_NRM.png
+	map_Ka ../textures/malp/arm.png
+	map_Kd ../textures/malp/arm.png
 
-newmtl Standard_3
+newmtl Antennas
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -58,10 +54,10 @@ newmtl Standard_3
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka textures/props.png
-	map_Kd textures/props.png
+	map_Ka ../textures/malp/antennas.png
+	map_Kd ../textures/malp/antennas.png
 
-newmtl Standard_5
+newmtl Body
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -72,7 +68,5 @@ newmtl Standard_5
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka textures/wheel.png
-	map_Kd textures/wheel.png
-	map_bump textures/wheelNORM.png
-	bump textures/wheelNORM.png
+	map_Ka ../textures/malp/body.png
+	map_Kd ../textures/malp/body.png
