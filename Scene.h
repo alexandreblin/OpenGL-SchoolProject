@@ -11,7 +11,7 @@
 #include <GL/glu.h>
 #endif
 
-#include "Object.h"
+#include "Mesh.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Angle.h"
@@ -19,9 +19,9 @@
 
 class Scene {
 private:
-	Object m_skybox;
-	Object m_ground;
-	Object m_malp;
+	Mesh m_skybox;
+	Mesh m_ground;
+	Mesh m_malp;
 	
 	Light m_light;
 	
