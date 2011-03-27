@@ -1,10 +1,5 @@
 #include "Scene.h"
-
-#define KEY_Z 122
-#define KEY_Q 113
-#define KEY_S 115
-#define KEY_D 100
-#define KEY_C 99
+#include "Keyboard.h"
 
 Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					m_ground("objects/ground.obj"),
