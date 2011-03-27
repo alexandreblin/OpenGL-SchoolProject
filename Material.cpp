@@ -84,7 +84,7 @@ void Material::loadTexture() {
 	glGenTextures(1, &id);
 	
 	std::vector<unsigned char> buffer, image;
-	LodePNG::loadFile(buffer, "objects/textures/" + m_textureFile);
+	LodePNG::loadFile(buffer, m_textureFile);
 	LodePNG::Decoder decoder;
 	decoder.decode(image, buffer.empty() ? 0 : &buffer[0], (unsigned)buffer.size());
 

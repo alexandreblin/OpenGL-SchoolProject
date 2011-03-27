@@ -225,10 +225,18 @@ void Object::loadFromFile(std::string filename) {
 				currentSmoothingGroup = 0;
 		}
 		else if (type == "mtllib") {
-			string file;
-			str >> file;
-			cout << "MTL Lib file: " << file << endl;
-			parseMTLFile(file);
+			string mtlFilename;
+			str >> mtlFilename;
+			
+			// on ajoute le chemin du dossier de l'objet au chemin du fichier MTL
+			// car le chemin du MTL est relatif à celui de l'objet
+			size_t lastSlash = filename.rfind("/");
+			if (lastSlash != string::npos) {
+				mtlFilename.insert(0, filename.substr(0, lastSlash+1));
+			}
+			
+			cout << "MTL Lib file: " << mtlFilename << endl;
+			parseMTLFile(mtlFilename);
 		}
 		else if (type == "usemtl") {
 			string mtl;
@@ -243,7 +251,7 @@ void Object::loadFromFile(std::string filename) {
 }
 
 void Object::parseMTLFile(std::string filename) {
-	ifstream file(string("objects/" + filename).c_str());
+	ifstream file(filename.c_str());
 	
 	string currentMaterial;
 	string line;
@@ -297,6 +305,13 @@ void Object::parseMTLFile(std::string filename) {
 				}
 				
 				str >> value;
+			}
+			
+			// on ajoute le chemin du dossier du MTL au chemin du fichier texture
+			// car le chemin de la texture est relatif à celui du MTL
+			size_t lastSlash = filename.rfind("/");
+			if (lastSlash != string::npos) {
+				value.insert(0, filename.substr(0, lastSlash+1));
 			}
 			
 			m_materials[currentMaterial]->setTextureFile(value);

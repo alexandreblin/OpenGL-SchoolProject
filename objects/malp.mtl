@@ -12,10 +12,10 @@ newmtl Material__2
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka body.png
-	map_Kd body.png
-	map_bump body_NRM.png
-	bump body_NRM.png
+	map_Ka textures/body.png
+	map_Kd textures/body.png
+	map_bump textures/body_NRM.png
+	bump textures/body_NRM.png
 
 newmtl Material__0
 	Ns 10.0000
@@ -28,8 +28,8 @@ newmtl Material__0
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka antennas.png
-	map_Kd antennas.png
+	map_Ka textures/antennas.png
+	map_Kd textures/antennas.png
 
 newmtl Material__1
 	Ns 10.0000
@@ -42,10 +42,10 @@ newmtl Material__1
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka arm.png
-	map_Kd arm.png
-	map_bump arm_NRM.png
-	bump arm_NRM.png
+	map_Ka textures/arm.png
+	map_Kd textures/arm.png
+	map_bump textures/arm_NRM.png
+	bump textures/arm_NRM.png
 
 newmtl Standard_3
 	Ns 10.0000
@@ -58,8 +58,8 @@ newmtl Standard_3
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka props.png
-	map_Kd props.png
+	map_Ka textures/props.png
+	map_Kd textures/props.png
 
 newmtl Standard_5
 	Ns 10.0000
@@ -72,7 +72,7 @@ newmtl Standard_5
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka wheel.png
-	map_Kd wheel.png
-	map_bump wheelNORM.png
-	bump wheelNORM.png
+	map_Ka textures/wheel.png
+	map_Kd textures/wheel.png
+	map_bump textures/wheelNORM.png
+	bump textures/wheelNORM.png
