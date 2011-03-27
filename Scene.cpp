@@ -148,13 +148,10 @@ GLvoid Scene::mousePress(int button, int state, int x, int y) {
 	if (m_cameraMode != FREELOOK)
 		return;
 	
-	if (button == GLUT_LEFT_BUTTON) {
-		// on peut regarder autour de nous en restant appuyé
-		// sur le bouton gauche de la souris
-	
-		m_oldMouseX = x;
-		m_oldMouseY = y;
-	}
+	// on initialise les variables qui permettrons de savoir
+	// de combien la souris s'est déplacée pour bouger la caméra
+	m_oldMouseX = x;
+	m_oldMouseY = y;
 }
 
 GLvoid Scene::mouseMove(int x, int y) {
