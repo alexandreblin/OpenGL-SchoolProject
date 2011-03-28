@@ -16,12 +16,6 @@ newmtl Top
 	Ks 0 0 0
 	map_Ka -clamp on textures/skybox/top.png
 
-newmtl Bottom
-	Ka 1 1 1
-	Kd 1 1 1
-	Ks 0 0 0
-	map_Ka -clamp on textures/skybox/bottom.png
-
 newmtl Left
 	Ka 1 1 1
 	Kd 1 1 1
