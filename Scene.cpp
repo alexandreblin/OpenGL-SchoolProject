@@ -20,7 +20,7 @@ GLvoid Scene::init() {
 		
 	glEnable(GL_TEXTURE_2D);
 	
-	Light::setGlobalAmbientLight(0.1);
+	Light::setGlobalAmbientLight(0.3);
 	
 	m_light.setDiffuse(0.9);
 	m_light.setAmbient(0);
@@ -167,12 +167,12 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 	    }
 	}
 	
-	if (m_cameraPos.x() > 29.8) m_cameraPos.setX(29.8);
-	if (m_cameraPos.x() < -29.8) m_cameraPos.setX(-29.8);
-	if (m_cameraPos.y() > 29.8) m_cameraPos.setY(29.8);
+	if (m_cameraPos.x() > 15.8) m_cameraPos.setX(15.8);
+	if (m_cameraPos.x() < -15.8) m_cameraPos.setX(-15.8);
+	if (m_cameraPos.y() > 15.8) m_cameraPos.setY(15.8);
 	if (m_cameraPos.y() < 0.2) m_cameraPos.setY(0.2);
-	if (m_cameraPos.z() > 29.8) m_cameraPos.setZ(29.8);
-	if (m_cameraPos.z() < -29.8) m_cameraPos.setZ(-29.8);
+	if (m_cameraPos.z() > 15.8) m_cameraPos.setZ(15.8);
+	if (m_cameraPos.z() < -15.8) m_cameraPos.setZ(-15.8);
 }
 
 GLvoid Scene::mousePress(int button, int state, int x, int y) {
