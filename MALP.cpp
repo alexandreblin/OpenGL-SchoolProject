@@ -2,7 +2,7 @@
 
 MALP::MALP(Point pos, Angle angle, Vector scale) : Object(pos, angle, scale),
 	m_body("objects/malp/body.obj"),
-	m_arm1("objects/malp/arm1.obj", Point(), Angle(-20, 0, 0)),
+	m_arm1("objects/malp/arm1.obj", Point(), Angle(20, 0, 0)),
 	m_arm2("objects/malp/arm2.obj"),
 	m_clawTop("objects/malp/claw.obj"),
 	m_clawBottom("objects/malp/claw.obj", Point(), Angle(0, 0, 180))
@@ -18,9 +18,9 @@ MALP::MALP(Point pos, Angle angle, Vector scale) : Object(pos, angle, scale),
 void MALP::draw() {
 	glTranslatef(m_position.x(), m_position.y(), m_position.z());
 	
-	glRotatef(-m_angle.pitch(), 1, 0, 0);
-	glRotatef(-m_angle.yaw(), 0, 1, 0);
-	glRotatef(-m_angle.roll(), 0, 0, 1);
+	glRotatef(m_angle.pitch(), 1, 0, 0);
+	glRotatef(m_angle.yaw(), 0, 1, 0);
+	glRotatef(m_angle.roll(), 0, 0, 1);
 	
 	m_body.draw();
 	

@@ -16,9 +16,9 @@ Mesh::Mesh(std::string filename, Point pos, Angle angle, Vector scale) : Object(
 void Mesh::draw() {
 	glTranslatef(m_position.x(), m_position.y(), m_position.z());
 	
-	glRotatef(-m_angle.pitch(), 1, 0, 0);
-	glRotatef(-m_angle.yaw(), 0, 1, 0);
-	glRotatef(-m_angle.roll(), 0, 0, 1);
+	glRotatef(m_angle.pitch(), 1, 0, 0);
+	glRotatef(m_angle.yaw(), 0, 1, 0);
+	glRotatef(m_angle.roll(), 0, 0, 1);
 	
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {		
 		Face & f = m_faces[i];

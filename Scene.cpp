@@ -3,7 +3,7 @@
 
 Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					m_ground("objects/ground.obj"),
-					m_malp(Point(0, 0, 0), Angle(0, 90, 0)),
+					m_malp(Point(0, 0, 0), Angle(0, -90, 0)),
 					
 					m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL),
 					
@@ -38,16 +38,12 @@ GLvoid Scene::display() {
 
 	// Mise en place de la caméra
 	if (m_cameraMode == FIRSTPERSON) {
-		m_cameraAngle = Angle(0, -m_malp.angle().yaw() + 180, 0);
-		m_cameraPos = m_malp.position() + Vector::normal(m_cameraAngle.direction(), Vector(0, 1, 0))*-0.25 + Point(0, 1.2, 0);
+		m_cameraAngle = Angle(0, m_malp.angle().yaw()+180, 0);
+		m_cameraPos = m_malp.position() + Vector::normal(m_cameraAngle.direction(), Vector(0, 1, 0))*0.25 + Point(0, 1.2, 0);
 	}
 	
-	if (m_cameraAngle.pitch() != 0)
-		glRotatef(-m_cameraAngle.pitch(), 1, 0, 0);
-		
-	if (m_cameraAngle.yaw() != 0)
-		glRotatef(-m_cameraAngle.yaw(), 0, 1, 0);
-
+	glRotatef(-m_cameraAngle.pitch(), 1, 0, 0);
+	glRotatef(-m_cameraAngle.yaw(), 0, 1, 0);
 	glTranslatef(-m_cameraPos.x(), -m_cameraPos.y(), -m_cameraPos.z());
 
 
@@ -114,16 +110,16 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 	if (!specialKey) {
 		switch (key) {
 		case KEY_Z:
-			m_cameraPos += dir * 0.2;
-			break;
-		case KEY_Q:
-			m_cameraPos -= perp * 0.2;
-			break;
-		case KEY_S:
 			m_cameraPos -= dir * 0.2;
 			break;
-		case KEY_D:
+		case KEY_Q:
 			m_cameraPos += perp * 0.2;
+			break;
+		case KEY_S:
+			m_cameraPos += dir * 0.2;
+			break;
+		case KEY_D:
+			m_cameraPos -= perp * 0.2;
 			break;
 		case KEY_C:
 			m_cameraMode = (m_cameraMode == FREELOOK ? FIRSTPERSON : FREELOOK);
@@ -153,15 +149,15 @@ GLvoid Scene::mouseMove(int x, int y) {
 	if (m_cameraMode != FREELOOK)
 		return;
 	
-	int deltaX = m_oldMouseX - x;
-	int deltaY = m_oldMouseY - y;
+	int deltaX = x - m_oldMouseX;
+	int deltaY = y - m_oldMouseY;
 	
 	// on fait tourner la caméra proportionellement aux dimensions de la
 	// fenêtre pour que le mouvement soit uniforme quelle que soit sa taille
 
-	m_cameraAngle.addYaw(deltaX/(float)glutGet(GLUT_WINDOW_WIDTH) * 180);
-	m_cameraAngle.addPitch(deltaY/(float)glutGet(GLUT_WINDOW_HEIGHT) * 180);
-	
+	m_cameraAngle.addYaw(-deltaX/(float)glutGet(GLUT_WINDOW_WIDTH) * 180);
+	m_cameraAngle.addPitch(-deltaY/(float)glutGet(GLUT_WINDOW_HEIGHT) * 180);
+		
 	m_oldMouseX = x;
 	m_oldMouseY = y;
 }

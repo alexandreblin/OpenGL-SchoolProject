@@ -9,7 +9,7 @@ Vector Angle::direction() {
 	float yawRad = m_yaw / 180 * PI;
 	float pitchRad = m_pitch / 180 * PI;
 	
-	return Vector(sin(yawRad+PI) * cos(pitchRad), sin(pitchRad), cos(yawRad+PI) * cos(pitchRad)).normalized();
+	return Vector(sin(yawRad) * cos(pitchRad), -sin(pitchRad), cos(yawRad) * cos(pitchRad)).normalized();
 }
 
 float Angle::pitch() {
