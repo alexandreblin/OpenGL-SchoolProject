@@ -124,7 +124,47 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 		case KEY_C:
 			m_cameraMode = (m_cameraMode == FREELOOK ? FIRSTPERSON : FREELOOK);
 			break;
+        case KEY_R:
+            m_malp.addArm1Pitch(-1);
+            break;
+        case KEY_MAJ+KEY_R:
+            m_malp.addArm1Pitch(1);
+            break;
+        case KEY_T:
+            m_malp.addArm2Pitch(-1);
+            break;
+        case KEY_MAJ+KEY_T:
+            m_malp.addArm2Pitch(1);
+            break;
+        case KEY_Y:
+            m_malp.addArm2Yaw(-1);
+            break;
+        case KEY_MAJ+KEY_Y:
+            m_malp.addArm2Yaw(1);
+            break;
+        case KEY_U:
+            m_malp.addClawPitch(-1);
+            break;
+        case KEY_MAJ+KEY_U:
+            m_malp.addClawPitch(1);
+            break;
 		}
+	}
+	else {
+	    switch (key) {
+        case GLUT_KEY_UP:
+            m_malp.moveForward(0.03);
+            break;
+        case GLUT_KEY_DOWN:
+            m_malp.moveForward(-0.03);
+            break;
+        case GLUT_KEY_LEFT:
+            m_malp.rotate(1);
+            break;
+        case GLUT_KEY_RIGHT:
+            m_malp.rotate(-1);
+            break;
+	    }
 	}
 	
 	if (m_cameraPos.x() > 29.8) m_cameraPos.setX(29.8);

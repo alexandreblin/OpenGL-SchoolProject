@@ -1,5 +1,17 @@
 #include "MALP.h"
 
+float MALP::MinArm1Pitch = 20;
+float MALP::MaxArm1Pitch = 150;
+
+float MALP::MinArm2Pitch = -90;
+float MALP::MaxArm2Pitch = 0;
+
+float MALP::MinArm2Yaw = -90;
+float MALP::MaxArm2Yaw = 90;
+
+float MALP::MinClawPitch = -30;
+float MALP::MaxClawPitch = 0;
+
 MALP::MALP(Point pos, Angle angle, Vector scale) : Object(pos, angle, scale),
 	m_body("objects/malp/body.obj"),
 	m_arm1("objects/malp/arm1.obj", Point(), Angle(20, 0, 0)),
@@ -48,4 +60,74 @@ void MALP::draw() {
 		m_wheels[i]->draw();
 		glPopMatrix();
 	}
+}
+
+void MALP::moveForward(float dist) {
+    for (int i = 0; i < 6; ++i) {
+		m_wheels[i]->angle().addPitch(dist*400);
+	}
+	
+    m_position += m_angle.direction() * dist;
+}
+
+void MALP::rotate(float angle) {
+    for (int i = 0; i < 6; ++i) {
+        if (i < 3)
+		    m_wheels[i]->angle().addPitch(-angle*2);
+		else
+		    m_wheels[i]->angle().addPitch(angle*2);
+	}
+	
+    m_angle.addYaw(angle);
+}
+
+void MALP::addArm1Pitch(float angle) {
+    if (m_arm1.angle().pitch() - angle > MaxArm1Pitch) {
+        m_arm1.angle().setPitch(MaxArm1Pitch);
+    }
+    else if (m_arm1.angle().pitch() - angle < MinArm1Pitch) {
+        m_arm1.angle().setPitch(MinArm1Pitch);
+    }
+    else {
+        m_arm1.angle().addPitch(-angle);
+    }
+}
+
+void MALP::addArm2Pitch(float angle) {
+    if (m_arm2.angle().pitch() + angle > MaxArm2Pitch) {
+        m_arm2.angle().setPitch(MaxArm2Pitch);
+    }
+    else if (m_arm2.angle().pitch() + angle < MinArm2Pitch) {
+        m_arm2.angle().setPitch(MinArm2Pitch);
+    }
+    else {
+        m_arm2.angle().addPitch(angle);
+    }
+}
+
+void MALP::addArm2Yaw(float angle) {
+    if (m_arm2.angle().yaw() + angle > MaxArm2Yaw) {
+        m_arm2.angle().setYaw(MaxArm2Yaw);
+    }
+    else if (m_arm2.angle().yaw() + angle < MinArm2Yaw) {
+        m_arm2.angle().setYaw(MinArm2Yaw);
+    }
+    else {
+        m_arm2.angle().addYaw(angle);
+    }
+}
+
+void MALP::addClawPitch(float angle) {
+    if (m_clawTop.angle().pitch() + angle > MaxClawPitch) {
+        m_clawTop.angle().setPitch(MaxClawPitch);
+        m_clawBottom.angle().setPitch(-MaxClawPitch);
+    }
+    else if (m_clawTop.angle().pitch() + angle < MinClawPitch) {
+        m_clawTop.angle().setPitch(MinClawPitch);
+        m_clawBottom.angle().setPitch(-MinClawPitch);
+    }
+    else {
+        m_clawTop.angle().addPitch(angle);
+        m_clawBottom.angle().addPitch(-angle);
+    }
 }
