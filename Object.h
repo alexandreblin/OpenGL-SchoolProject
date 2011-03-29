@@ -27,7 +27,7 @@ public:
 	Point & position();
 	Angle & angle();
 
-	virtual void draw() = 0;
+	virtual void draw(bool keepMatrix = false) = 0;
 };
 
 #endif

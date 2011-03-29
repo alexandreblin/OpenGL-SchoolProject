@@ -13,7 +13,10 @@ Mesh::Mesh(std::string filename, Point pos, Angle angle, Vector scale) : Object(
     scaleVertices(m_scale);
 }
 
-void Mesh::draw() {
+void Mesh::draw(bool keepMatrix) {
+    if (!keepMatrix)
+        glPushMatrix();
+    
 	glTranslatef(m_position.x(), m_position.y(), m_position.z());
 	
 	glRotatef(m_angle.pitch(), 1, 0, 0);
@@ -43,6 +46,9 @@ void Mesh::draw() {
 		
 		glEnd();
 	}
+	
+	if (!keepMatrix)
+        glPopMatrix();
 }
 
 void Mesh::computeRemainingNormals() {

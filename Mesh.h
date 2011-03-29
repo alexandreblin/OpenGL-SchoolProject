@@ -29,7 +29,7 @@ private:
 public:
     Mesh(std::string filename, Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
 
-	virtual void draw();
+	virtual void draw(bool keepMatrix = false);
 	
 	void loadTextures();
 	

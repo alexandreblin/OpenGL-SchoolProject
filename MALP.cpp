@@ -27,39 +27,37 @@ MALP::MALP(Point pos, Angle angle, Vector scale) : Object(pos, angle, scale),
 	m_wheels[5] = new Mesh("objects/malp/wheel.obj", Point(-0.4393, 0.25614, -0.59398));
 }
 
-void MALP::draw() {
+void MALP::draw(bool keepMatrix) {
+    if (!keepMatrix)
+        glPushMatrix();
+    
 	glTranslatef(m_position.x(), m_position.y(), m_position.z());
 	
 	glRotatef(m_angle.pitch(), 1, 0, 0);
 	glRotatef(m_angle.yaw(), 0, 1, 0);
 	glRotatef(m_angle.roll(), 0, 0, 1);
 	
-	m_body.draw();
+	m_body.draw(true);
 	
 	glPushMatrix();
 		glTranslatef(0, 0.80594, 0.70648);
-		m_arm1.draw();
+		m_arm1.draw(true);
 	
 		glTranslatef(0, -0.02264, -0.58912);
-		m_arm2.draw();
+		m_arm2.draw(true);
 	
 		glTranslatef(0, 0.45278, 0.70568);
 		glRotatef(-25, 1, 0, 0);
-	
-		glPushMatrix();
-			m_clawTop.draw();
-		glPopMatrix();
-	
-		glPushMatrix();
-			m_clawBottom.draw();
-		glPopMatrix();
+	    
+		m_clawTop.draw();
+		m_clawBottom.draw();
 	glPopMatrix();
 	
-	for (int i = 0; i < 6; ++i) {
-		glPushMatrix();
+	for (int i = 0; i < 6; ++i)
 		m_wheels[i]->draw();
-		glPopMatrix();
-	}
+	
+	if (!keepMatrix)
+        glPopMatrix();
 }
 
 void MALP::moveForward(float dist) {

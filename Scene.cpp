@@ -48,26 +48,17 @@ GLvoid Scene::display() {
 
 
 	// Mise en place de la lumière
-	glPushMatrix();
-		m_light.place();
-		m_light.enable();
-	glPopMatrix();
+	m_light.place();
+	m_light.enable();
 	
 	
 	// Affichage de la skybox
-	glPushMatrix();
-		m_skybox.draw();
-  	glPopMatrix();
+	m_skybox.draw();
 	
 	
 	// Dessin des objets
-	glPushMatrix();
-		m_ground.draw();
-  	glPopMatrix();
-	
-	glPushMatrix();
-		m_malp.draw();
-  	glPopMatrix();
+	m_ground.draw();
+	m_malp.draw();
 
 	
 	glutSwapBuffers();
