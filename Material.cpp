@@ -80,49 +80,32 @@ void Material::loadTexture() {
 		return;
 	}
 	
-	GLuint id;	
+	// je ne sais pas si je peux appeler cette fonction plusieurs fois mais je n'ai vu
+	// aucune contre-indication dans la documentation
+	GLuint id;
 	glGenTextures(1, &id);
 	
+	// on charge la texture avec LodePNG
 	std::vector<unsigned char> buffer, image;
 	LodePNG::loadFile(buffer, m_textureFile);
 	LodePNG::Decoder decoder;
 	decoder.decode(image, buffer.empty() ? 0 : &buffer[0], (unsigned)buffer.size());
+	
+    int height = decoder.getHeight();
+    int width = decoder.getWidth();
+    
+    // on inverse la texture car OpenGL les charge à l'envers
+    unsigned char tmp;
+    for (int h = 0; h < height/2; ++h) {
+        int line = h * (width*4);
+        int oppositeLine = (height - h - 1) * (width*4);
 
-	//
-	// Flip and invert the PNG image since OpenGL likes to load everything
-	// backwards from what is considered normal!
-	//
-
-	unsigned char *imagePtr = &image[0];
-	int halfTheHeightInPixels = decoder.getHeight() / 2;
-	int heightInPixels = decoder.getHeight();
-
-	// Assuming RGBA for 4 components per pixel.
-	int numColorComponents = 4;
-
-	// Assuming each color component is an unsigned char.
-	int widthInChars = decoder.getWidth() * numColorComponents;
-
-	unsigned char *top = NULL;
-	unsigned char *bottom = NULL;
-	unsigned char temp = 0;
-
-	for( int h = 0; h < halfTheHeightInPixels; ++h )
-	{
-	    top = imagePtr + h * widthInChars;
-	    bottom = imagePtr + (heightInPixels - h - 1) * widthInChars;
-
-	    for( int w = 0; w < widthInChars; ++w )
-	    {
-	        // Swap the chars around.
-	        temp = *top;
-	        *top = *bottom;
-	        *bottom = temp;
-
-	        ++top;
-	        ++bottom;
-	    }
-	}
+        for (int w = 0; w < width*4; ++w) {
+            tmp = image[line + w];
+            image[line + w] = image[oppositeLine + w];
+            image[oppositeLine + w] = tmp;
+        }
+    }
     
 	glBindTexture(GL_TEXTURE_2D, id);
 
@@ -136,7 +119,7 @@ void Material::loadTexture() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, decoder.getWidth(), decoder.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
 	
 	m_textureID = id;
 	texturesIDs[m_textureFile] = id;
