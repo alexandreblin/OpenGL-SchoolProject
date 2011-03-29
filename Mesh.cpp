@@ -62,8 +62,8 @@ void Mesh::computeRemainingNormals() {
 
 		count++;
 		
-		if (count % 1000 == 0)
-			cout << count << "/" << m_faces.size() << endl;
+		//if (count % 1000 == 0)
+		//	cout << count << "/" << m_faces.size() << endl;
 		
 		// on boucle sur chaque sommet de la face
 		for (unsigned int j = 0; j < face.vertices().size(); ++j) {
@@ -85,7 +85,8 @@ void Mesh::computeRemainingNormals() {
 }
 
 void Mesh::computeFaceNormals() {
-	// d'après http://www.opengl.org/wiki/Calculating_a_Surface_Normal
+	// inspiré de http://www.opengl.org/wiki/Calculating_a_Surface_Normal (Newell's method)
+	// pour pouvoir calculer la normale de la face quelque soit son nombre de sommets
 	
 	if (m_faceNormals.size() != m_faces.size()) {
 		cout << "Computing face normals..." << endl;
@@ -95,7 +96,7 @@ void Mesh::computeFaceNormals() {
 		for (unsigned int i = 0; i < m_faces.size(); ++i) {
 			// on boucle sur chaque face
 			
-			cout << i+1 << "/" << m_faces.size() << endl;
+			//cout << i+1 << "/" << m_faces.size() << endl;
 			
 			Face face = m_faces[i];
 			Vector normal(0, 0, 0);
