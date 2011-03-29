@@ -1,6 +1,6 @@
 #include "Face.h"
 
-Face::Face() : m_smoothingGroup(0), m_material(NULL) {}
+Face::Face() : m_material(NULL) {}
 
 std::vector<int> & Face::vertices() {
 	return m_vertices;
@@ -20,17 +20,6 @@ void Face::setMaterial(Material *mat) {
 
 Material * Face::material() {
 	return m_material;
-}
-
-void Face::setSmoothingGroup(int s) {
-	if (s < 0)
-		s = 0;
-		
-	m_smoothingGroup = s;
-}
-
-int Face::smoothingGroup() {
-	return m_smoothingGroup;
 }
 
 bool Face::hasTexCoords() {

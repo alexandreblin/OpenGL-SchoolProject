@@ -64,8 +64,7 @@ void Mesh::computeRemainingNormals() {
 			Vector normal(0, 0, 0);
 			
 			for (unsigned int k = 0; k < m_faces.size(); k++) {
-				if (m_faces[k].smoothingGroup() == face.smoothingGroup() &&
-				find(m_faces[k].vertices().begin(), m_faces[k].vertices().end(), face.vertices()[j]) != m_faces[k].vertices().end()) {
+				if (find(m_faces[k].vertices().begin(), m_faces[k].vertices().end(), face.vertices()[j]) != m_faces[k].vertices().end()) {
 					// si la face contient notre sommet, on ajoute sa normale
 					normal += m_faceNormals[k];
 				}
@@ -145,7 +144,6 @@ void Mesh::scaleVertices(Vector scale) {
 void Mesh::loadFromFile(std::string filename) {
 	ifstream file(filename.c_str());
 	
-	int currentSmoothingGroup = 0;
 	Material *defaultMat = new Material();
 	Material *currentMat = defaultMat;
 	string line;
@@ -181,7 +179,6 @@ void Mesh::loadFromFile(std::string filename) {
 			Face f;
 			
 			f.setMaterial(currentMat);
-			f.setSmoothingGroup(currentSmoothingGroup);
 			
 			// format : f v/vt/vn, avec vt et vn optionnels
 			while (str.good()) {
@@ -212,13 +209,6 @@ void Mesh::loadFromFile(std::string filename) {
 			}
 			
 			m_faces.push_back(f);
-		}
-		else if (type == "s") {
-			int s;
-			if (str >> s)
-				currentSmoothingGroup = s;
-			else
-				currentSmoothingGroup = 0;
 		}
 		else if (type == "mtllib") {
 			string mtlFilename;

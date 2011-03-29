@@ -10,8 +10,6 @@ private:
 	std::vector<float> m_texCoords;
 	std::vector<int> m_normals;
 	
-	int m_smoothingGroup;
-	
 	Material *m_material;
 
 public:
@@ -23,9 +21,6 @@ public:
 	
 	void setMaterial(Material *mat);
 	Material * material();
-	
-	void setSmoothingGroup(int s);
-	int smoothingGroup();
 	
 	bool hasTexCoords();
 	bool hasNormals();
