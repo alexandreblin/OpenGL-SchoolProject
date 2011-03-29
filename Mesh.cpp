@@ -252,7 +252,7 @@ void Mesh::parseMTLFile(std::string filename) {
 
 			m_materials[currentMaterial] = new Material();
 		}
-		else if (type == "Ka" || type == "Kd" || type == "Ks") {
+		else if (type == "Ka" || type == "Kd" || type == "Ke" || type == "Ks") {
 			float r, g, b;
 			
 			str >> r;
@@ -269,6 +269,9 @@ void Mesh::parseMTLFile(std::string filename) {
 			}
 			else if (type == "Kd") {
 				m_materials[currentMaterial]->setDiffuse(r, g, b);
+			}
+			else if (type == "Ke") {
+				m_materials[currentMaterial]->setEmission(r, g, b);
 			}
 			else if (type == "Ks") {
 				m_materials[currentMaterial]->setSpecular(r, g, b);

@@ -22,6 +22,7 @@ private:
 	float m_ambient[3];
 	float m_diffuse[3];
 	float m_specular[3];
+	float m_emission[3];
 	float m_shininess;
 	bool m_clamping;
 	
@@ -43,6 +44,7 @@ public:
 	void setAmbient(float r, float g, float b);
 	void setDiffuse(float r, float g, float b);
 	void setSpecular(float r, float g, float b);
+	void setEmission(float r, float g, float b);
 	void setShininess(float s);
 	void setClamping(bool clamping);
 	

@@ -18,6 +18,10 @@ Material::Material() : m_shininess(0), m_clamping(false), m_textureFile(), m_tex
 	m_specular[0] = 0;
 	m_specular[1] = 0;
 	m_specular[2] = 0;
+
+	m_emission[0] = 0;
+	m_emission[1] = 0;
+	m_emission[2] = 0;
 }
 
 float * Material::ambient() {
@@ -52,6 +56,12 @@ void Material::setSpecular(float r, float g, float b) {
 	m_specular[0] = r;
 	m_specular[1] = g;
 	m_specular[2] = b;
+}
+
+void Material::setEmission(float r, float g, float b) {
+	m_emission[0] = r;
+	m_emission[1] = g;
+	m_emission[2] = b;
 }
 
 void Material::setShininess(float s) {
@@ -130,6 +140,7 @@ void Material::apply() {
 		glMaterialfv(GL_FRONT, GL_AMBIENT, m_ambient);
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, m_diffuse);
 		glMaterialfv(GL_FRONT, GL_SPECULAR, m_specular);
+		glMaterialfv(GL_FRONT, GL_EMISSION, m_emission);
 	
 		glMaterialf(GL_FRONT, GL_SHININESS, m_shininess);
 	
