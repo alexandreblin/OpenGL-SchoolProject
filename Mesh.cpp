@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Mesh::Mesh(std::string filename, Point pos, Angle angle, Vector scale) : Object(pos, angle, scale) {
+Mesh::Mesh(std::string filename, Point pos, Angle angle, Vector scale) : Object(pos, angle, scale), m_disableMaterial(false) {
 	loadFromFile(filename);
 	
 	computeFaceNormals();
@@ -23,7 +23,8 @@ void Mesh::draw() {
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {		
 		Face & f = m_faces[i];
 		
-		f.material()->apply();
+		if (!m_disableMaterial)
+		    f.material()->apply();
 
 		glBegin(GL_POLYGON);
 		
@@ -129,6 +130,9 @@ Point Mesh::getFaceCenter(Face f) {
 	return center;
 }
 
+void Mesh::setDisableMaterial(bool b) {
+    m_disableMaterial = b;
+}
 
 void Mesh::scaleVertices(Vector scale) {
     for (unsigned int i = 0; i < m_vertices.size(); ++i) {

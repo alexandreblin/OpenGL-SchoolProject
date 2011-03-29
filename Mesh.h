@@ -23,6 +23,8 @@ private:
 	std::vector<std::vector<float> > m_texCoords;
 	
 	std::map<std::string, Material *> m_materials;
+	
+    bool m_disableMaterial;
 		
 public:
     Mesh(std::string filename, Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
@@ -30,6 +32,8 @@ public:
 	virtual void draw();
 	
 	void loadTextures();
+	
+    void setDisableMaterial(bool b);
 	
 private:
 	void loadFromFile(std::string filename);
