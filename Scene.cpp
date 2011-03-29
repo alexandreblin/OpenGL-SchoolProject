@@ -56,10 +56,7 @@ GLvoid Scene::display() {
 	
 	// Affichage de la skybox
 	glPushMatrix();
-		// on désactive l'éclairage, la skybox est toujours illuminée
-		glDisable(GL_LIGHTING);
 		m_skybox.draw();
-		glEnable(GL_LIGHTING);
   	glPopMatrix();
 	
 	

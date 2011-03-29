@@ -2,28 +2,33 @@ newmtl Back
 	Ka 1 1 1
 	Kd 1 1 1
 	Ks 0 0 0
+	Ke 1 1 1
 	map_Ka -clamp on textures/skybox/back.png
 
 newmtl Front
 	Ka 1 1 1
 	Kd 1 1 1
 	Ks 0 0 0
+	Ke 1 1 1
 	map_Ka -clamp on textures/skybox/front.png
 
 newmtl Top
 	Ka 1 1 1
 	Kd 1 1 1
 	Ks 0 0 0
+	Ke 1 1 1
 	map_Ka -clamp on textures/skybox/top.png
 
 newmtl Left
 	Ka 1 1 1
 	Kd 1 1 1
 	Ks 0 0 0
+	Ke 1 1 1
 	map_Ka -clamp on textures/skybox/left.png
 
 newmtl Right
 	Ka 1 1 1
 	Kd 1 1 1
 	Ks 0 0 0
+	Ke 1 1 1
 	map_Ka -clamp on textures/skybox/right.png
