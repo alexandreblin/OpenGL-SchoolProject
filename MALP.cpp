@@ -66,6 +66,12 @@ void MALP::moveForward(float dist) {
 	}
 	
     m_position += m_angle.direction() * dist;
+    
+    // on empêche le MALP de sortir de la scène
+	if (m_position.x() > 14) m_position.setX(14);
+	if (m_position.x() < -14) m_position.setX(-14);
+    if (m_position.z() > 14) m_position.setZ(14);
+    if (m_position.z() < -14) m_position.setZ(-14);
 }
 
 void MALP::rotate(float angle) {
