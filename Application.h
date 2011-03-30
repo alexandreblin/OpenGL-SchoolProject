@@ -24,6 +24,7 @@ private:
 public:
     ~Application();
     
+    // Application ne peut être instanciée qu'une seule fois par exécution
 	static Application* instance() {
 		if (!appInstance)
 			appInstance = new Application();

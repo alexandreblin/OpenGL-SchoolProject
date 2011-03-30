@@ -78,9 +78,7 @@ const Vector Vector::operator*(float scalar) const {
 	return res;
 }
 
-/*
- * Opérateurs surchargés pour ajouter un vecteur à un point
- */
+// Opérateurs surchargés pour ajouter un vecteur à un point
 Point & operator+=(Point &p, const Vector &v) {
 	p.addX(v.m_x);
 	p.addY(v.m_y);

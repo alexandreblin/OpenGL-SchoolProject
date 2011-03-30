@@ -53,8 +53,8 @@ private:
     Light m_gatelight;
 	
 	enum CameraMode {
-		FIRSTPERSON,
-		FREELOOK
+		FIRSTPERSON, // première personne
+		FREELOOK // caméra libre
 	};
 	
 	CameraMode m_cameraMode;

@@ -22,28 +22,24 @@ private:
 	
 	std::vector<std::vector<float> > m_texCoords;
 	
+	// tableau associant les noms des matériaux à leurs objets correspondants
 	std::map<std::string, Material *> m_materials;
 	
     bool m_disableMaterial;
 		
 public:
-    Mesh(std::string filename, Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
+    Mesh(std::string filename, Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0));
 
 	virtual void draw(bool keepMatrix = false);
 	
     void setMaterial(Material *m);
-    void setDisableMaterial(bool b);
 	
 private:
 	void loadFromFile(std::string filename);
 	void parseMTLFile(std::string filename);
-	
-    void scaleVertices(Vector scale);
     
 	void computeFaceNormals();
 	void computeRemainingNormals();
-	
-	Point getFaceCenter(Face f);
 };
 
 #endif

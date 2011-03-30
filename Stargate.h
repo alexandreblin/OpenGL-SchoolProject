@@ -11,10 +11,11 @@ private:
 	Mesh m_horizonFront;
 	Mesh m_horizonBack;
 	
+	// l'animation
     Material * m_horizonMaterials[31];
 	
 public:
-	Stargate(Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
+	Stargate(Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0));
 	
 	virtual void draw(bool keepMatrix = false);
 };

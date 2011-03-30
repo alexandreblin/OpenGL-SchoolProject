@@ -2,11 +2,12 @@
 
 using namespace std;
 
-Stargate::Stargate(Point pos, Angle angle, Vector scale) : Object(pos, angle, scale),
+Stargate::Stargate(Point pos, Angle angle) : Object(pos, angle),
     m_gate("objects/stargate/stargate.obj"),
 	m_horizonFront("objects/stargate/horizon.obj", Point(0, 0, 0.17)),
 	m_horizonBack("objects/stargate/horizon.obj", Point(0, 0, -0.17), Angle(0, 180, 0))
 {
+    // initialisation des textures de l'animation
     for (int i = 0; i < 31; ++i) {
         Material *m = new Material();
         
@@ -30,7 +31,7 @@ void Stargate::draw(bool keepMatrix) {
 	glRotatef(m_angle.yaw(), 0, 1, 0);
 	glRotatef(m_angle.roll(), 0, 0, 1);
 	    
-    // on applique l'animation
+    // on applique l'animation de l'horizon des évènements
     m_horizonFront.setMaterial(m_horizonMaterials[(glutGet(GLUT_ELAPSED_TIME)/40)%30]);
     m_horizonBack.setMaterial(m_horizonMaterials[(glutGet(GLUT_ELAPSED_TIME)/40)%30]);
     

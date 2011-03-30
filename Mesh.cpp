@@ -2,13 +2,12 @@
 
 using namespace std;
 
-Mesh::Mesh(std::string filename, Point pos, Angle angle, Vector scale) : Object(pos, angle, scale), m_disableMaterial(false) {
+Mesh::Mesh(std::string filename, Point pos, Angle angle) : Object(pos, angle), m_disableMaterial(false) {
 	loadFromFile(filename);
 	
 	computeFaceNormals();
+	
 	computeRemainingNormals();
-    
-    scaleVertices(m_scale);
 }
 
 void Mesh::draw(bool keepMatrix) {
@@ -24,7 +23,7 @@ void Mesh::draw(bool keepMatrix) {
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {		
 		Face & f = m_faces[i];
 		
-		if (!m_disableMaterial)
+		if (f.material() != NULL)
 		    f.material()->apply();
 
 		glBegin(GL_POLYGON);
@@ -49,6 +48,7 @@ void Mesh::draw(bool keepMatrix) {
         glPopMatrix();
 }
 
+// méthode calculant les normales aux sommets manquantes (car non précisées dans le fichier OBJ)
 void Mesh::computeRemainingNormals() {
 	// on boucle sur chaque face de l'objet
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {
@@ -67,7 +67,10 @@ void Mesh::computeRemainingNormals() {
 				}
 			}
 			
+			// on ajoute le vecteur dans le tableau
 			m_vertexNormals.push_back(normal.normalized());
+			
+			// on stocke son indice dans l'objet Face
 			face.normals().push_back(m_vertexNormals.size()-1);
 		}		
 	}
@@ -76,6 +79,7 @@ void Mesh::computeRemainingNormals() {
 void Mesh::computeFaceNormals() {
 	// inspiré de http://www.opengl.org/wiki/Calculating_a_Surface_Normal (Newell's method)
 	// pour pouvoir calculer la normale de la face quelque soit son nombre de sommets
+	// (j'aurais pu faire moi même l'algo mais vu que celui-ci était sur le wiki d'OpenGL je pense qu'il est plus sûr)
 	
 	if (m_faceNormals.size() != m_faces.size()) {
 		m_faceNormals.clear();
@@ -89,7 +93,7 @@ void Mesh::computeFaceNormals() {
 				// on boucle sur chaque sommet de la face
 				Point curVertex = m_vertices[face.vertices()[j]];
 				Point nextVertex = m_vertices[face.vertices()[(j+1)%face.numVertices()]];
-			
+			    
 				normal.addX((curVertex.y() - nextVertex.y()) * (curVertex.z() + nextVertex.z()));
 				normal.addY((curVertex.z() - nextVertex.z()) * (curVertex.x() + nextVertex.x()));
 				normal.addZ((curVertex.x() - nextVertex.x()) * (curVertex.y() + nextVertex.y()));
@@ -100,57 +104,30 @@ void Mesh::computeFaceNormals() {
 	}
 }
 
-Point Mesh::getFaceCenter(Face f) {
-	Point center(0, 0, 0);
-	
-	int numVertices = f.numVertices();
-	
-	for (int i = 0; i < numVertices; ++i) {
-		center.addX(m_vertices[f.vertices()[i]].x());
-		center.addY(m_vertices[f.vertices()[i]].y());
-		center.addZ(m_vertices[f.vertices()[i]].z());
-	}
-	
-	center.setX(center.x() / numVertices);
-	center.setY(center.y() / numVertices);
-	center.setZ(center.z() / numVertices);
-	
-	return center;
-}
-
-void Mesh::setDisableMaterial(bool b) {
-    m_disableMaterial = b;
-}
-
 void Mesh::setMaterial(Material *m) {
     for (unsigned int i = 0; i < m_faces.size(); ++i) {
         m_faces[i].setMaterial(m);
     }
 }
 
-void Mesh::scaleVertices(Vector scale) {
-    for (unsigned int i = 0; i < m_vertices.size(); ++i) {
-        m_vertices[i].setX(m_vertices[i].x() * scale.x());
-        m_vertices[i].setY(m_vertices[i].y() * scale.y());
-        m_vertices[i].setZ(m_vertices[i].z() * scale.z());
-    }
-}
-
+// Méthode qui parse les fichiers OBJ
 void Mesh::loadFromFile(std::string filename) {
 	ifstream file(filename.c_str());
 	
     std::cout << "Loading object " << filename.substr(filename.rfind("/") != string::npos ? filename.rfind("/")+1 : 0) << std::endl;
 	
-	Material *defaultMat = new Material();
+	Material *defaultMat = new Material(); // le matériau par défaut si une face n'en a pas
 	Material *currentMat = defaultMat;
+	
 	string line;
 	while(getline(file, line)) {
 		stringstream str(line);
 		string type;
 		
+		// on récupère le premier mot de la ligne pour savoir quel type de données on va parser
 		str >> type;
 
-		if (type == "v" || type == "vn") {
+		if (type == "v" || type == "vn") { // vecteur ou normale
 			float x, y, z;
 			
 			str >> x >> y >> z;
@@ -162,7 +139,7 @@ void Mesh::loadFromFile(std::string filename) {
 				m_vertexNormals.push_back(Vector(x, y, z));
 			}
 		}
-		else if (type == "vt") {
+		else if (type == "vt") { // coordonnées de texture
 			float x, y;
 			std::vector<float> coords;
 			
@@ -172,7 +149,7 @@ void Mesh::loadFromFile(std::string filename) {
 			
 			m_texCoords.push_back(coords);
 		}
-		else if (type == "f") {
+		else if (type == "f") { // face
 			Face f;
 			
 			f.setMaterial(currentMat);
@@ -207,7 +184,7 @@ void Mesh::loadFromFile(std::string filename) {
 			
 			m_faces.push_back(f);
 		}
-		else if (type == "mtllib") {
+		else if (type == "mtllib") { // définition du fichier .mtl
 			string mtlFilename;
 			str >> mtlFilename;
 			
@@ -220,7 +197,7 @@ void Mesh::loadFromFile(std::string filename) {
 			
 			parseMTLFile(mtlFilename);
 		}
-		else if (type == "usemtl") {
+		else if (type == "usemtl") { // définition du matériau courant
 			string mtl;
 			if (str >> mtl)
 				currentMat = m_materials[mtl];
@@ -232,6 +209,7 @@ void Mesh::loadFromFile(std::string filename) {
 	file.close();
 }
 
+// Méthode qui parse les fichiers MTL, appelée lorsque l'on rencontre un "mtllib" dans loadFromFile()
 void Mesh::parseMTLFile(std::string filename) {
 	ifstream file(filename.c_str());
 	
@@ -243,12 +221,12 @@ void Mesh::parseMTLFile(std::string filename) {
 		string type;	
 		str >> type;
 		
-		if (type == "newmtl") {
+		if (type == "newmtl") { // définition d'un nouveau matériau
 			str >> currentMaterial;
 
 			m_materials[currentMaterial] = new Material();
 		}
-		else if (type == "Ka" || type == "Kd" || type == "Ke" || type == "Ks") {
+		else if (type == "Ka" || type == "Kd" || type == "Ke" || type == "Ks") { // une couleur
 			float r, g, b;
 			
 			str >> r;
@@ -260,25 +238,25 @@ void Mesh::parseMTLFile(std::string filename) {
 				b = r;
 			}
 			
-			if (type == "Ka") {
+			if (type == "Ka") { // ambient
 				m_materials[currentMaterial]->setAmbient(r, g, b);
 			}
-			else if (type == "Kd") {
+			else if (type == "Kd") { // diffuse
 				m_materials[currentMaterial]->setDiffuse(r, g, b);
 			}
-			else if (type == "Ke") {
+			else if (type == "Ke") { // emission (pas sûr que ça soit dans le standard OBJ mais certains fichiers contiennent ce mot-clé)
 				m_materials[currentMaterial]->setEmission(r, g, b);
 			}
-			else if (type == "Ks") {
+			else if (type == "Ks") { // spéculaire
 				m_materials[currentMaterial]->setSpecular(r, g, b);
 			}
 		}
-		else if (type == "Ns") {
+		else if (type == "Ns") { // brillance
 			float shininess;
 			str >> shininess;
 			m_materials[currentMaterial]->setShininess(shininess);
 		}
-		else if (type == "map_Ka") {
+		else if (type == "map_Ka") { // fichier de texture
 			string value;
 			str >> value;
 			

@@ -12,7 +12,8 @@ float MALP::MaxArm2Yaw = 90;
 float MALP::MinClawPitch = -30;
 float MALP::MaxClawPitch = 0;
 
-MALP::MALP(Point pos, Angle angle, Vector scale) : Object(pos, angle, scale),
+MALP::MALP(Point pos, Angle angle) : Object(pos, angle),
+    // je ne donne pas de position à ces éléments car je les positionnerai à la main dans draw()
 	m_body("objects/malp/body.obj"),
 	m_arm1("objects/malp/arm1.obj", Point(), Angle(20, 0, 0)),
 	m_arm2("objects/malp/arm2.obj"),

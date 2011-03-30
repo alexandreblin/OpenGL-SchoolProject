@@ -12,17 +12,15 @@
 #endif
 
 #include "Point.h"
-#include "Vector.h"
 #include "Angle.h"
 
 class Object {
 protected:
 	Point m_position;
 	Angle m_angle;
-	Vector m_scale;
 
 public:
-    Object(Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
+    Object(Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0));
 
 	Point & position();
 	Angle & angle();

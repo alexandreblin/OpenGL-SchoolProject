@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Object::Object(Point pos, Angle angle, Vector scale) : m_position(pos), m_angle(angle), m_scale(scale) {
+Object::Object(Point pos, Angle angle) : m_position(pos), m_angle(angle) {
 }
 
 Point & Object::position() {

@@ -27,7 +27,7 @@ private:
 	Mesh * m_wheels[6];
 	
 public:
-	MALP(Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0), Vector scale = Vector(1, 1, 1));
+	MALP(Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0));
 	
 	virtual void draw(bool keepMatrix = false);
 	

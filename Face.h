@@ -15,9 +15,13 @@ private:
 public:
 	Face();
 	
+	// tableaux contenant les indices des sommets/normales de la face
+	// dans le tableau correspondant dans Mesh
 	std::vector<int> & vertices();
-	std::vector<float> & texCoords();
 	std::vector<int> & normals();
+	
+	// contient directement les coordonnées des textures
+	std::vector<float> & texCoords();
 	
 	void setMaterial(Material *mat);
 	Material * material();

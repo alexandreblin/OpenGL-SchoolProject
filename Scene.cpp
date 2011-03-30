@@ -1,6 +1,17 @@
 #include "Scene.h"
 #include "Keyboard.h"
 
+/*
+ * La scène est divisées en deux "mondes" séparés par une porte des étoiles.
+ * Ces deux mondes (un désert de jour et une plaine de nuit) ont la même largeur, longueur et hauteur (30 * 30 * 15)
+ * L'un est en (0,0,0) et l'autre en (0,0,-30), donc pour tester si un objet ou la caméra se trouve d'un coté ou de l'autre,
+ * je teste simplement si sa coordonées Z est supérieure ou inférieure à 15 (plus ou moins quelques dixièmes,
+ * notamment pour la collision, pour pas que la caméra soit "pile" sur le bord et voit donc ce qu'il y a derrière)
+ *
+ * Je gère le "passage" à travers la porte par une simple condition dans la détection de collision:
+ * X compris entre -2 et 2 et Y compris entre 0 et 3.3, ce qui correspond approximativement à la taille de la porte
+ */
+
 Point Scene::defaultCameraPos = Point(4, 4, 3);
 Angle Scene::defaultCameraAngle = Angle(-20, 27, 0);
 
@@ -45,11 +56,16 @@ GLvoid Scene::init() {
 	
 	Light::setGlobalAmbientLight(0.3);
 
+    // on définit les lumières de la scène, et quelques matériaux supplémentaires (utilisés pour les sphères)
 	m_sunlight.setDiffuse(0.9);
 	m_sunlight.setSpecular(0.9);
 	
 	m_moonlight.setDiffuse(0.2);
 	m_moonlight.setSpecular(0.2);
+    
+    m_gatelight.setDiffuse(0.16, 0.31, 0.9);
+    m_gatelight.setAttenuation(1, 0, 0.05);
+    
 	
     m_redlight.setDiffuse(1, 0, 0);
 	
@@ -59,6 +75,7 @@ GLvoid Scene::init() {
     m_redMaterial->setEmission(0.5, 0, 0);
     m_redsphere.setMaterial(m_redMaterial);
 	
+	
     m_blueMaterial = new Material();
     m_blueMaterial->setAmbient(0, 0, 0.4);
     m_blueMaterial->setDiffuse(0, 0, 0.4);
@@ -67,6 +84,7 @@ GLvoid Scene::init() {
 	
     m_bluelight.setDiffuse(0, 0, 1);
 	
+	
 	m_greenMaterial = new Material();
     m_greenMaterial->setAmbient(0, 0.2, 0);
     m_greenMaterial->setDiffuse(0, 0.2, 0);
@@ -74,19 +92,18 @@ GLvoid Scene::init() {
     m_greensphere.setMaterial(m_greenMaterial);
 	
     m_greenlight.setDiffuse(0, .7, 0);
-    
-    m_gatelight.setDiffuse(0.16, 0.31, 0.9);
-    m_gatelight.setAttenuation(1, 0, 0.05);
 }
 
-// fonction de modélisation
-GLvoid Scene::display() {
+// Fonction de modélisation
+GLvoid Scene::display() {        
 	// Initialisation
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glLoadIdentity();
 	
+	// Affichage du FPS
 	printFramerate();
+
 
 	// Mise en place de la caméra
 	if (m_cameraMode == FIRSTPERSON) {
@@ -98,6 +115,7 @@ GLvoid Scene::display() {
 	glRotatef(-m_cameraAngle.yaw(), 0, 1, 0);
 	glTranslatef(-m_cameraPos.x(), -m_cameraPos.y(), -m_cameraPos.z());
 	
+	
 	// Affichage des skybox
 	// on n'affiche que la skybox visible (sinon j'avais un petit bug d'affichage)
 	if (m_cameraPos.z() > -15.1)
@@ -105,34 +123,43 @@ GLvoid Scene::display() {
 	
 	if (m_cameraPos.z() < -14.9)
 	    m_skybox2.draw();
+	    
+    // lumière de la porte des étoiles (commune aux deux "mondes")
+    m_gatelight.place();
+    m_gatelight.enable();
+    	
+    ///////////////////
+	// Monde "désert"
+	///////////////////
 	
-
-	// Mise en place de la lumière du désert
+	// mise en place de la lumière du soleil
     m_sunlight.place();
     m_sunlight.enable();
     
-    // on dessine le malp et la porte avec l'éclairage du désert
-    // seulement si la caméra est présente dans le désert également
+	m_sand.draw(); // sol
+    m_pyramid.draw();
+    
+    // l'éclairage du MALP et de la porte dépendent de la position de la caméra
+    // car le MALP est mobile et la porte est le même objet commun aux deux mondes
 	if (m_cameraPos.z() > -15) {
 		m_malp.draw();
 		m_stargate.draw();
     }
 
-	
-	// Dessin des objets
-	m_sand.draw();
-    m_pyramid.draw();
-
-    drawReplique();
+    drawReplique(); // la réplique autonome
   	
+  	///////////////////
+  	// Monde "plaine"
+  	///////////////////
+  	
+  	// on désactive la lumière du désert
   	m_sunlight.disable();
   	
+  	// on active la lumière de la lune du monde "plaine"
     m_moonlight.place();
     m_moonlight.enable();
     
-    m_gatelight.place();
-    m_gatelight.enable();
-    
+    // les sphères lumineuses
     glPushMatrix();
         glTranslatef(-2, 2+cos(glutGet(GLUT_ELAPSED_TIME)/1000.0), -30);
         glRotatef(-180+glutGet(GLUT_ELAPSED_TIME)/10.0, 0, 1, 0);
@@ -157,14 +184,15 @@ GLvoid Scene::display() {
         m_greenlight.enable();
         m_greensphere.draw();
     glPopMatrix();
-  	
-  	m_grass.draw();
-  	
+    
+  	// Dessin des objets de la plaine
+  	m_grass.draw(); // le sol
     m_temple.draw();
-  	
-  	if (m_cameraPos.z() < -15) {
-    	m_malp.draw();
-      	m_stargate.draw();
+    
+    // cf plus haut
+	if (m_cameraPos.z() < -15) {
+		m_malp.draw();
+		m_stargate.draw();
     }
   	
     m_moonlight.disable();
@@ -178,9 +206,11 @@ GLvoid Scene::display() {
 void Scene::drawReplique() {
     static int nextMove = glutGet(GLUT_ELAPSED_TIME);
     static int nextDirectionChange = nextMove + 4000;
+    
     if (glutGet(GLUT_ELAPSED_TIME) >= nextMove) {
         static int sens = 1;
         
+        // on change la direction du mouvement toutes les 4 secondes
         if (glutGet(GLUT_ELAPSED_TIME) > nextDirectionChange) {
             sens = -sens;
             nextDirectionChange = glutGet(GLUT_ELAPSED_TIME) + 4000;
@@ -222,6 +252,8 @@ GLvoid Scene::reshape(GLsizei width, GLsizei height) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+// La méthode qui reçoit les évènements clavier
+// (elle est appelée pour glutKeyboardFunc et glutSpecialFunc)
 GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 	// vecteur correspondant à la direction de la caméra
 	Vector dir = m_cameraAngle.direction();
@@ -314,17 +346,23 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
 	    }
 	}
 	
+	// empêche la caméra de sortir de la scène
 	if (m_cameraPos.x() > 14.8) m_cameraPos.setX(14.8);
 	if (m_cameraPos.x() < -14.8) m_cameraPos.setX(-14.8);
 	if (m_cameraPos.y() > 14.8) m_cameraPos.setY(14.8);
 	if (m_cameraPos.y() < 0.2) m_cameraPos.setY(0.2);
 	
+	// le test en Z est différent en fonction du monde où l'on se trouve
 	if (m_cameraPos.z() > -15) {
     	if (m_cameraPos.z() > 14.8) m_cameraPos.setZ(14.8);
+    	
+    	// ce test à une condition supplémentaire pour laisser passer la caméra si l'on tente de passer à travers la porte
     	if (m_cameraPos.z() < -14.8 && (m_cameraPos.y() > 3.3 || m_cameraPos.x() < -2 || m_cameraPos.x() > 2)) m_cameraPos.setZ(-14.8);
 	}
 	else {
     	if (m_cameraPos.z() < -44.8) m_cameraPos.setZ(-44.8);
+    	
+    	// idem
     	if (m_cameraPos.z() > -15.2 && (m_cameraPos.y() > 3.3 || m_cameraPos.x() < -2 || m_cameraPos.x() > 2)) m_cameraPos.setZ(-15.2);
 	}
 }
@@ -348,7 +386,6 @@ GLvoid Scene::mouseMove(int x, int y) {
 	
 	// on fait tourner la caméra proportionellement aux dimensions de la
 	// fenêtre pour que le mouvement soit uniforme quelle que soit sa taille
-
 	m_cameraAngle.addYaw(-deltaX/(float)glutGet(GLUT_WINDOW_WIDTH) * 180);
 	m_cameraAngle.addPitch(-deltaY/(float)glutGet(GLUT_WINDOW_HEIGHT) * 180);
 		
