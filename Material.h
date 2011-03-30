@@ -14,6 +14,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <iostream>
 
 #include "lodepng.h"
 

@@ -52,18 +52,11 @@ void Mesh::draw(bool keepMatrix) {
 }
 
 void Mesh::computeRemainingNormals() {
-	cout << "Computing remaining vertex normals..." << endl;
-	int count = 0;
 	// on boucle sur chaque face de l'objet
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {
 		Face & face = m_faces[i];
 		
 		if (face.hasNormals()) continue;
-
-		count++;
-		
-		//if (count % 1000 == 0)
-		//	cout << count << "/" << m_faces.size() << endl;
 		
 		// on boucle sur chaque sommet de la face
 		for (unsigned int j = 0; j < face.vertices().size(); ++j) {
@@ -80,8 +73,6 @@ void Mesh::computeRemainingNormals() {
 			face.normals().push_back(m_vertexNormals.size()-1);
 		}		
 	}
-
-	cout << count << " remaining vertex normals computed!" << endl;
 }
 
 void Mesh::computeFaceNormals() {
@@ -89,15 +80,10 @@ void Mesh::computeFaceNormals() {
 	// pour pouvoir calculer la normale de la face quelque soit son nombre de sommets
 	
 	if (m_faceNormals.size() != m_faces.size()) {
-		cout << "Computing face normals..." << endl;
-		
 		m_faceNormals.clear();
 		
 		for (unsigned int i = 0; i < m_faces.size(); ++i) {
-			// on boucle sur chaque face
-			
-			//cout << i+1 << "/" << m_faces.size() << endl;
-			
+			// on boucle sur chaque face			
 			Face face = m_faces[i];
 			Vector normal(0, 0, 0);
 		
@@ -113,8 +99,6 @@ void Mesh::computeFaceNormals() {
 		
 			m_faceNormals.push_back(normal.normalized());
 		}
-		
-		cout << "Face normals computed!" << endl;
 	}
 }
 
@@ -156,6 +140,8 @@ void Mesh::scaleVertices(Vector scale) {
 
 void Mesh::loadFromFile(std::string filename) {
 	ifstream file(filename.c_str());
+	
+    std::cout << "Loading object " << filename.substr(filename.rfind("/") != string::npos ? filename.rfind("/")+1 : 0) << std::endl;
 	
 	Material *defaultMat = new Material();
 	Material *currentMat = defaultMat;
@@ -234,7 +220,6 @@ void Mesh::loadFromFile(std::string filename) {
 				mtlFilename.insert(0, filename.substr(0, lastSlash+1));
 			}
 			
-			cout << "MTL Lib file: " << mtlFilename << endl;
 			parseMTLFile(mtlFilename);
 		}
 		else if (type == "usemtl") {

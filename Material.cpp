@@ -1,5 +1,7 @@
 #include "Material.h"
 
+using namespace std;
+
 std::map<std::string, int> Material::texturesIDs;
 Material * Material::lastApplied = NULL;
 
@@ -94,6 +96,9 @@ void Material::loadTexture() {
 	// aucune contre-indication dans la documentation
 	GLuint id;
 	glGenTextures(1, &id);
+	
+	// code un peu barbare pour afficher le nom de la texture sans le dossier :P
+    std::cout << "Loading texture " << m_textureFile.substr(m_textureFile.rfind("/") != string::npos ? m_textureFile.rfind("/")+1 : 0) << std::endl;
 	
 	// on charge la texture avec LodePNG
 	std::vector<unsigned char> buffer, image;
