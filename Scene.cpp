@@ -1,6 +1,9 @@
 #include "Scene.h"
 #include "Keyboard.h"
 
+Point Scene::defaultCameraPos = Point(2, 2, 4);
+Angle Scene::defaultCameraAngle = Angle(-20, 27, 0);
+
 Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					m_ground("objects/ground.obj"),
 					m_malp(Point(0, 0, 0), Angle(0, -90, 0)),
@@ -8,7 +11,8 @@ Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL),
 					
 					m_cameraMode(FREELOOK),
-					m_cameraPos(Point(0, 1, 4))
+					m_cameraPos(defaultCameraPos),
+					m_cameraAngle(defaultCameraAngle)
 {}
 
 // fonction appelée juste avant glutMainLoop
@@ -135,6 +139,11 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
             break;
         case KEY_MAJ+KEY_U:
             m_malp.addClawPitch(1);
+            break;
+        case KEY_SPACE:
+            m_cameraPos = defaultCameraPos;
+            m_cameraAngle = defaultCameraAngle;
+            m_cameraMode = FREELOOK;
             break;
 		}
 	}
