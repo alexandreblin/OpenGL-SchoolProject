@@ -16,7 +16,7 @@
 #include "Point.h"
 #include "Vector.h"
 #include "Angle.h"
-#include "Spot.h"
+#include "Light.h"
 
 class Scene {
 private:

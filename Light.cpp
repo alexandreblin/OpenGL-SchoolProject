@@ -9,7 +9,7 @@ void Light::setGlobalAmbientLight(float v) {
 	Light::setGlobalAmbientLight(v, v, v);
 }
 
-Light::Light(GLenum lightNum, Point position, Light::Type type) : m_lightNum(lightNum), m_position(position), m_type(type) {
+Light::Light(GLenum lightNum, Point position, Light::Type type) : m_lightNum(lightNum), m_position(position), m_type(type), m_isOn(true) {
 }
 
 void Light::place() {
@@ -45,11 +45,24 @@ void Light::setAmbient(float v) {
 }
 
 void Light::enable() {
-	glEnable(m_lightNum);
+    if (m_isOn)
+	    glEnable(m_lightNum);
 }
 
 void Light::disable() {
 	glDisable(m_lightNum);
+}
+
+bool Light::isOn() {
+    return m_isOn;
+}
+
+void Light::setOn() {
+    m_isOn = true;
+}
+
+void Light::setOff() {
+    m_isOn = false;
 }
 
 Point & Light::position() {

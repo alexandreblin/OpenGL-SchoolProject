@@ -27,6 +27,10 @@ protected:
 	GLenum m_lightNum;
 	Point m_position;
 	Light::Type m_type;
+	
+	// permet de désactiver une lumière complètement, meme si enable() est appelé
+	// (utilisé pour pouvoir éteindre/allumer la lumière avec une touche)
+    bool m_isOn;
 
 public:	
 	Light(GLenum lightNum, Point position, Light::Type type = Light::POSITIONAL);
@@ -45,6 +49,10 @@ public:
 	
 	void enable();
 	void disable();
+	
+    bool isOn();
+    void setOn();
+    void setOff();
 };
 
 #endif
