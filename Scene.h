@@ -17,12 +17,14 @@
 #include "Vector.h"
 #include "Angle.h"
 #include "Light.h"
+#include "Stargate.h"
 
 class Scene {
 private:
 	Mesh m_skybox;
 	Mesh m_ground;
 	MALP m_malp;
+    Stargate m_stargate;
 	
 	Light m_light;
 	

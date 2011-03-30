@@ -7,6 +7,7 @@ Angle Scene::defaultCameraAngle = Angle(-20, 27, 0);
 Scene::Scene() : 	m_skybox("objects/skybox.obj"),
 					m_ground("objects/ground.obj"),
 					m_malp(Point(0, 0, 0), Angle(0, -90, 0)),
+                    m_stargate(Point(0, 0, -10)),
 					
 					m_light(GL_LIGHT0, Point(-1, 1, 1), Light::DIRECTIONAL),
 					
@@ -62,6 +63,7 @@ GLvoid Scene::display() {
 	// Dessin des objets
 	m_ground.draw();
 	m_malp.draw();
+    m_stargate.draw();
 
 	
 	glutSwapBuffers();

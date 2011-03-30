@@ -1,7 +1,7 @@
 EXECUTABLENAME=projet
 
-SRCS=main.cpp Application.cpp Scene.cpp Point.cpp Vector.cpp Object.cpp Angle.cpp Light.cpp Face.cpp Material.cpp lodepng.cpp Mesh.cpp MALP.cpp
-HDRS=Application.h Scene.h Point.h Vector.h Object.h Angle.h Light.h Face.h Material.h lodepng.h Mesh.h MALP.h Keyboard.h
+SRCS=main.cpp Application.cpp Scene.cpp Point.cpp Vector.cpp Object.cpp Angle.cpp Light.cpp Face.cpp Material.cpp lodepng.cpp Mesh.cpp MALP.cpp Stargate.cpp
+HDRS=Application.h Scene.h Point.h Vector.h Object.h Angle.h Light.h Face.h Material.h lodepng.h Mesh.h MALP.h Keyboard.h Stargate.h
 
 CFLAGS=-c -g -Wall
 LDFLAGS=-g
