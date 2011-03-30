@@ -5,6 +5,10 @@ Application* Application::appInstance = 0;
 Application::Application() : m_scene(NULL) {
 }
 
+Application::~Application() {
+    delete m_scene;
+}
+
 void Application::setup(int *argc, char *argv[], std::string windowName) {	
 	glutInit(argc, argv);
 	
@@ -63,6 +67,8 @@ GLvoid Application::mouseMoveCallback(int x, int y) {
 
 int Application::exec() {
 	glutMainLoop();
+	
+    delete this;
 	
 	return 0;
 }

@@ -22,6 +22,8 @@ private:
 	Scene *m_scene;
 	
 public:
+    ~Application();
+    
 	static Application* instance() {
 		if (!appInstance)
 			appInstance = new Application();
