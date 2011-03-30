@@ -71,7 +71,15 @@ void MALP::moveForward(float dist) {
 	if (m_position.x() > 14) m_position.setX(14);
 	if (m_position.x() < -14) m_position.setX(-14);
     if (m_position.z() > 14) m_position.setZ(14);
-    if (m_position.z() < -14) m_position.setZ(-14);
+    
+    if (m_position.z() > -15) {
+    	if (m_position.z() > 14) m_position.setZ(14);
+    	if (m_position.z() < -14 && (m_position.y() > 3.3 || m_position.x() < -2 || m_position.x() > 2)) m_position.setZ(-14);
+	}
+	else {
+    	if (m_position.z() < -44) m_position.setZ(-44);
+    	if (m_position.z() > -16 && (m_position.y() > 3.3 || m_position.x() < -2 || m_position.x() > 2)) m_position.setZ(-16);
+	}
 }
 
 void MALP::rotate(float angle) {

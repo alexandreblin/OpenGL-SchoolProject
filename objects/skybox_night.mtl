@@ -1,0 +1,34 @@
+newmtl Back
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0 0 0
+	Ke .5 .5 .5
+	map_Ka -clamp on textures/skybox/night/back.png
+
+newmtl Front
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0 0 0
+	Ke .5 .5 .5
+	map_Ka -clamp on textures/skybox/night/front.png
+
+newmtl Top
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0 0 0
+	Ke .5 .5 .5
+	map_Ka -clamp on textures/skybox/night/top.png
+
+newmtl Left
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0 0 0
+	Ke .5 .5 .5
+	map_Ka -clamp on textures/skybox/night/left.png
+
+newmtl Right
+	Ka 1 1 1
+	Kd 1 1 1
+	Ks 0 0 0
+	Ke .5 .5 .5
+	map_Ka -clamp on textures/skybox/night/right.png

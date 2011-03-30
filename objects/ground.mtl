@@ -1,2 +1,5 @@
 newmtl Grass
 	map_Ka textures/grass.png
+
+newmtl Sand
+	map_Ka textures/sand.png

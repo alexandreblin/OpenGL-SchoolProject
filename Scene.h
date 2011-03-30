@@ -13,6 +13,7 @@
 
 #include "Mesh.h"
 #include "MALP.h"
+#include "Stargate.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Angle.h"
@@ -22,11 +23,34 @@
 class Scene {
 private:
 	Mesh m_skybox;
-	Mesh m_ground;
-	MALP m_malp;
-    Stargate m_stargate;
+	Mesh m_skybox2;
 	
-	Light m_light;
+	Mesh m_sand;
+	Mesh m_pyramid;
+	
+	Mesh m_grass;
+	Mesh m_temple;
+	
+    Mesh m_redsphere;
+    Mesh m_bluesphere;
+    Mesh m_greensphere;
+    
+    Material * m_redMaterial;
+    Material * m_blueMaterial;
+    Material * m_greenMaterial;
+    
+	MALP m_malp;
+	MALP m_malpClone;
+	Stargate m_stargate;
+	
+	Light m_sunlight;
+	Light m_moonlight;
+	
+	Light m_redlight;
+	Light m_bluelight;
+	Light m_greenlight;
+	
+    Light m_gatelight;
 	
 	enum CameraMode {
 		FIRSTPERSON,
@@ -56,6 +80,8 @@ public:
 
 private:
 	void printFramerate();
+	
+    void drawReplique();
 };
 
 #endif
