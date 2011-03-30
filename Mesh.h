@@ -33,6 +33,7 @@ public:
 	
 	void loadTextures();
 	
+    void setMaterial(Material *m);
     void setDisableMaterial(bool b);
 	
 private:

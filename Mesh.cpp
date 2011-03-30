@@ -140,6 +140,12 @@ void Mesh::setDisableMaterial(bool b) {
     m_disableMaterial = b;
 }
 
+void Mesh::setMaterial(Material *m) {
+    for (unsigned int i = 0; i < m_faces.size(); ++i) {
+        m_faces[i].setMaterial(m);
+    }
+}
+
 void Mesh::scaleVertices(Vector scale) {
     for (unsigned int i = 0; i < m_vertices.size(); ++i) {
         m_vertices[i].setX(m_vertices[i].x() * scale.x());
