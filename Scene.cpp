@@ -27,7 +27,6 @@ GLvoid Scene::init() {
 	Light::setGlobalAmbientLight(0.3);
 	
 	m_light.setDiffuse(0.9);
-	m_light.setAmbient(0);
 	m_light.setSpecular(1);
 }
 

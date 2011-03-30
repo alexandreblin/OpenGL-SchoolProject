@@ -10,6 +10,11 @@ void Light::setGlobalAmbientLight(float v) {
 }
 
 Light::Light(GLenum lightNum, Point position, Light::Type type) : m_lightNum(lightNum), m_position(position), m_type(type), m_isOn(true) {
+    // réglage des valeurs par défaut
+    setDiffuse(1);
+    setAmbient(0);
+    setSpecular(1);
+    setAttenuation(1, 0, 0.2);
 }
 
 void Light::place() {
@@ -30,6 +35,12 @@ void Light::setSpecular(float r, float g, float b) {
 void Light::setAmbient(float r, float g, float b) {
 	float ambient[4] = {r, g, b, 1};
 	glLightfv(m_lightNum, GL_AMBIENT, ambient);
+}
+
+void Light::setAttenuation(float constant, float linear, float quadratic) {
+    glLightf(m_lightNum, GL_CONSTANT_ATTENUATION, constant);
+    glLightf(m_lightNum, GL_LINEAR_ATTENUATION, linear);
+    glLightf(m_lightNum, GL_QUADRATIC_ATTENUATION, quadratic);
 }
 
 void Light::setDiffuse(float v) {

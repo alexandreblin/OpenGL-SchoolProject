@@ -45,6 +45,8 @@ public:
 	void setSpecular(float v);
 	void setAmbient(float v);
 	
+    void setAttenuation(float constant, float linear, float quadratic);
+	
 	Point & position();
 	
 	void enable();
