@@ -15,7 +15,6 @@ Stargate::Stargate(Point pos, Angle angle, Vector scale) : Object(pos, angle, sc
         
         m->setEmission(1, 1, 1); // l'horizon des évènements "émet" de la lumière
         m->setTextureFile("objects/textures/horizon/puddle_" + string(num) + ".png");
-        m->loadTexture();
         
         m_horizonMaterials[i] = m;
     }

@@ -7,8 +7,6 @@ Mesh::Mesh(std::string filename, Point pos, Angle angle, Vector scale) : Object(
 	
 	computeFaceNormals();
 	computeRemainingNormals();
-	
-    loadTextures();
     
     scaleVertices(m_scale);
 }
@@ -306,11 +304,4 @@ void Mesh::parseMTLFile(std::string filename) {
 	}
 	
 	file.close();
-}
-
-void Mesh::loadTextures() {
-	map<string, Material *>::iterator it;
-	for (it = m_materials.begin(); it != m_materials.end(); it++) {
-        it->second->loadTexture();
-	}
 }

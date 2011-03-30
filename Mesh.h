@@ -31,8 +31,6 @@ public:
 
 	virtual void draw(bool keepMatrix = false);
 	
-	void loadTextures();
-	
     void setMaterial(Material *m);
     void setDisableMaterial(bool b);
 	
