@@ -42,6 +42,7 @@ public:
 	static GLvoid specialKeyCallback(int key, int x, int y);
 	static GLvoid mousePressCallback(int button, int state, int x, int y);
 	static GLvoid mouseMoveCallback(int x, int y);
+	static void exitCallback();
 	
 	int exec();
 	

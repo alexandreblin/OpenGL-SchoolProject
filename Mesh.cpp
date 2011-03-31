@@ -116,8 +116,7 @@ void Mesh::loadFromFile(std::string filename) {
 	
     std::cout << "Loading object " << filename.substr(filename.rfind("/") != string::npos ? filename.rfind("/")+1 : 0) << std::endl;
 	
-	Material *defaultMat = new Material(); // le matériau par défaut si une face n'en a pas
-	Material *currentMat = defaultMat;
+	Material *currentMat = NULL;
 	
 	string line;
 	while(getline(file, line)) {
@@ -202,7 +201,7 @@ void Mesh::loadFromFile(std::string filename) {
 			if (str >> mtl)
 				currentMat = m_materials[mtl];
 			else
-				currentMat = defaultMat;
+				currentMat = NULL;
 		}
 	}
 	

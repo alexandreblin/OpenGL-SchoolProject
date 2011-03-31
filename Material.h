@@ -38,10 +38,18 @@ private:
 	// tableau des fichiers de texture à charger dans la carte graphique pour les charger
 	// toutes en même temps de façon à éviter d'appeler glGenTextures plusieurs fois
     static std::vector<Material *> toLoad;
+    
+    // tableau contenant tous les matériaux créés pendant l'exécution pour pouvoir les désallouer à la fin
+    // (j'ai fait ça car plusieurs faces peuvent avoir un pointeur vers le même matériau et je ne voulais
+    // pas dépendre de la librairie boost juste pour bénéficier des pointeurs partagés)
+	static std::vector<Material *> materials;
 	
 public:
 	Material();
-	
+    ~Material();
+    
+    static void deallocAll();
+    
 	float * ambient();
 	float * diffuse();
 	float * specular();

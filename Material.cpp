@@ -4,6 +4,7 @@ using namespace std;
 
 Material * Material::lastApplied = NULL;
 std::vector<Material *> Material::toLoad;
+std::vector<Material *> Material::materials;
 
 Material::Material() : m_shininess(0), m_clamping(false), m_textureFile(), m_textureID(0) {
 	// valeurs par défaut
@@ -24,6 +25,17 @@ Material::Material() : m_shininess(0), m_clamping(false), m_textureFile(), m_tex
 	m_emission[0] = 0;
 	m_emission[1] = 0;
 	m_emission[2] = 0;
+	
+    materials.push_back(this);
+}
+
+Material::~Material() {
+    glDeleteTextures(1, (GLuint *)&m_textureID);
+}
+
+void Material::deallocAll() {
+    for (unsigned int i = 0; i < materials.size(); ++i)
+        delete materials[i];
 }
 
 float * Material::ambient() {

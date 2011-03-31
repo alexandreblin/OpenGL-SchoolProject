@@ -28,6 +28,7 @@ private:
 	
 public:
 	MALP(Point pos = Point(0, 0, 0), Angle angle = Angle(0, 0, 0));
+    ~MALP();
 	
 	virtual void draw(bool keepMatrix = false);
 	

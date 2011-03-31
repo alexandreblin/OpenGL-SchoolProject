@@ -28,6 +28,11 @@ MALP::MALP(Point pos, Angle angle) : Object(pos, angle),
 	m_wheels[5] = new Mesh("objects/malp/wheel.obj", Point(-0.4393, 0.25614, -0.59398));
 }
 
+MALP::~MALP() {
+    for (int i = 0; i < 6; ++i)
+        delete m_wheels[i];
+}
+
 void MALP::draw(bool keepMatrix) {
     if (!keepMatrix)
         glPushMatrix();

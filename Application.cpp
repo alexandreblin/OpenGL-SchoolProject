@@ -7,6 +7,8 @@ Application::Application() : m_scene(NULL) {
 
 Application::~Application() {
     delete m_scene;
+    
+    Material::deallocAll();
 }
 
 void Application::setup(int *argc, char *argv[], std::string windowName) {	
@@ -64,11 +66,15 @@ GLvoid Application::mouseMoveCallback(int x, int y) {
 	Application::instance()->scene()->mouseMove(x, y);
 }
 
+void Application::exitCallback() {
+    delete appInstance;
+}
+
 
 int Application::exec() {
+    atexit(Application::exitCallback);
+    
 	glutMainLoop();
-	
-    delete this;
 	
 	return 0;
 }

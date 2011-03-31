@@ -15,6 +15,9 @@ std::vector<int> & Face::normals() {
 }
 
 void Face::setMaterial(Material *mat) {
+    if (mat == NULL)
+        mat = new Material(); // création d'un matériau par défaut si aucun n'est précisé
+    
 	m_material = mat;
 }
 
