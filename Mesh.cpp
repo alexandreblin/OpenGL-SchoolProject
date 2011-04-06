@@ -48,7 +48,7 @@ void Mesh::draw(bool keepMatrix) {
         glPopMatrix();
 }
 
-// méthode calculant les normales aux sommets manquantes (car non précisées dans le fichier OBJ)
+// méthode calculant les normales aux sommets manquantes (si non précisées dans le fichier OBJ)
 void Mesh::computeRemainingNormals() {
 	// on boucle sur chaque face de l'objet
 	for (unsigned int i = 0; i < m_faces.size(); ++i) {

@@ -99,6 +99,8 @@ void MALP::rotate(float angle) {
     m_angle.addYaw(angle);
 }
 
+// Méthodes qui contrôlent les mouvements du bras articulé
+// et qui empêchent le bras d'aller trop loin
 void MALP::addArm1Pitch(float angle) {
     if (m_arm1.angle().pitch() - angle > MaxArm1Pitch) {
         m_arm1.angle().setPitch(MaxArm1Pitch);

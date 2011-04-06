@@ -42,6 +42,8 @@ Scene * Application::scene() {
 	return m_scene;
 }
 
+// On ne peut pas passer des méthodes de fonction simplement à glut, alors j'utilise des méthodes
+// statiques qui appellent les méthodes correspondante sur l'unique instance d'Application
 GLvoid Application::reshapeCallback(GLsizei width, GLsizei height) {
 	Application::instance()->scene()->reshape(width, height);
 }

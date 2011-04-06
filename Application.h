@@ -46,8 +46,8 @@ public:
 	
 	int exec();
 	
-	// on déclare les constructeurs par recopie et l'opérateur d'assignation
-	// sans les implémenter pour ne pas que l'objet puisse être copié
+	// on déclare les constructeurs par recopie et l'opérateur d'assignation sans
+	// les implémenter pour ne pas que l'objet Application puisse être dupliqué
 	Application(const Application &a);
 	void operator=(const Application &a);
 };

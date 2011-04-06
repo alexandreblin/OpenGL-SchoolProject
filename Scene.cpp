@@ -1,17 +1,6 @@
 #include "Scene.h"
 #include "Keyboard.h"
 
-/*
- * La scène est divisées en deux "mondes" séparés par une porte des étoiles.
- * Ces deux mondes (un désert de jour et une plaine de nuit) ont la même largeur, longueur et hauteur (30 * 30 * 15)
- * L'un est en (0,0,0) et l'autre en (0,0,-30), donc pour tester si un objet ou la caméra se trouve d'un coté ou de l'autre,
- * je teste simplement si sa coordonées Z est supérieure ou inférieure à 15 (plus ou moins quelques dixièmes,
- * notamment pour la collision, pour pas que la caméra soit "pile" sur le bord et voit donc ce qu'il y a derrière)
- *
- * Je gère le "passage" à travers la porte par une simple condition dans la détection de collision:
- * X compris entre -2 et 2 et Y compris entre 0 et 3.3, ce qui correspond approximativement à la taille de la porte
- */
-
 Point Scene::defaultCameraPos = Point(4, 4, 3);
 Angle Scene::defaultCameraAngle = Angle(-20, 27, 0);
 
@@ -203,6 +192,7 @@ GLvoid Scene::display() {
 	glutSwapBuffers();
 }
 
+// Méthode qui affiche et anime la réplique autonome du sujet
 void Scene::drawReplique() {
     static int nextMove = glutGet(GLUT_ELAPSED_TIME);
     static int nextDirectionChange = nextMove + 4000;
