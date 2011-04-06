@@ -327,7 +327,10 @@ GLvoid Scene::keyPress(int key, int mouseX, int mouseY, bool specialKey) {
             m_cameraAngle = defaultCameraAngle;
             m_cameraMode = FREELOOK;
             break;
-		}
+		case KEY_ESCAPE:
+            exit(0);
+            break;
+        }
 	}
 	else {
 	    switch (key) {

@@ -31,5 +31,6 @@
 #define KEY_Z 122
 
 #define KEY_SPACE 32
+#define KEY_ESCAPE 27
 
 #endif
